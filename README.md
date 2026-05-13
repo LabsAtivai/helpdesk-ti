@@ -39,7 +39,7 @@ docker compose ps
 docker compose logs -f
 ```
 
-Acesse: `http://<IP_DO_SERVIDOR>:3000`
+Acesse: `http://<IP_DO_SERVIDOR>:8909`
 
 ---
 

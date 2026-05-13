@@ -7,9 +7,9 @@ services:
     container_name: helpdesk-ti
     restart: unless-stopped
     ports:
-      - "3000:3000"
+      - "8909:8909"
     environment:
-      - PORT=3000
+      - PORT=8909
       - SMTP_HOST=smtp.gmail.com
       - SMTP_PORT=587
       - SMTP_USER=${SMTP_USER}

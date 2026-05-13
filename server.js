@@ -6,7 +6,7 @@ const fs = require('fs');
 const path = require('path');
 
 const app = express();
-const PORT = process.env.PORT || 3000;
+const PORT = process.env.PORT || 8909;
 
 // ─── Configuração de e-mail ────────────────────────────────────────────────
 // Edite este bloco com suas credenciais antes de rodar
