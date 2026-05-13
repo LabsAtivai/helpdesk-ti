@@ -1,0 +1,18 @@
+# Dependências
+node_modules/
+
+# Variáveis de ambiente (NUNCA subir para o GitHub)
+.env
+
+# Dados e uploads (persistidos via volume Docker)
+data/tickets.json
+public/uploads/*
+!public/uploads/.gitkeep
+
+# Logs
+*.log
+npm-debug.log*
+
+# OS
+.DS_Store
+Thumbs.db
