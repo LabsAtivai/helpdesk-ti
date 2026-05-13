@@ -21,7 +21,7 @@ services:
       - helpdesk_data:/app/data
       - helpdesk_uploads:/app/public/uploads
     networks:
-      - helpdesk-net
+      - ativaai
 
 volumes:
   helpdesk_data:
@@ -30,5 +30,5 @@ volumes:
     driver: local
 
 networks:
-  helpdesk-net:
-    driver: bridge
+  ativaai:
+    external: true   # ← isso, não driver: bridge
