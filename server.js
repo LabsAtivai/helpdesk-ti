@@ -98,7 +98,7 @@ async function enviarEmailNovoTicket(ticket) {
               <strong>Descrição:</strong><br>${ticket.desc.replace(/\n/g,'<br>')}
             </div>
             <div style="margin-top:16px">
-              <a href="http://localhost:${PORT}" style="background:#1A1816;color:white;padding:10px 18px;border-radius:6px;text-decoration:none;font-size:13px">Abrir painel TI →</a>
+              <a href="http://localhost:${PORT}" style="background:#1A1816;color:white;padding:10px 18px;border-radius:6px;text-decoration:none;font-size:13px">Abrir painel Labs →</a>
             </div>
           </div>
         </div>
@@ -172,7 +172,7 @@ async function enviarEmailAtualizacao(ticket, mensagem, deTI) {
 async function enviarEmailStatus(ticket) {
   if (!ticket.emailSolicitante) return;
   const msgs = {
-    'Em andamento': { emoji: '🔧', texto: 'A equipe de TI já está trabalhando no seu chamado.' },
+    'Em andamento': { emoji: '🔧', texto: 'A equipe de Labs já está trabalhando no seu chamado.' },
     'Resolvido': { emoji: '✅', texto: 'Seu chamado foi marcado como resolvido. Acesse o sistema para confirmar e avaliar o atendimento.' }
   };
   const info = msgs[ticket.status];
