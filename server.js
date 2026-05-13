@@ -4,9 +4,19 @@ const multer = require('multer');
 const { v4: uuidv4 } = require('uuid');
 const fs = require('fs');
 const path = require('path');
+const crypto = require('crypto');
 
 const app = express();
 const PORT = process.env.PORT || 8909;
+
+// ─── Credenciais de acesso ao Painel TI ──────────────────────────────────
+// Altere aqui ou defina via variáveis de ambiente no .env
+const TI_USER = process.env.TI_USER || 'admin';
+const TI_PASS = process.env.TI_PASS || 'ti@ativaai2024';
+
+// Tokens de sessão em memória (simples, sem banco)
+const sessions = new Map();
+const SESSION_TTL = 8 * 60 * 60 * 1000; // 8 horas
 
 // ─── Configuração de e-mail ────────────────────────────────────────────────
 // Edite este bloco com suas credenciais antes de rodar
@@ -188,6 +198,36 @@ async function enviarEmailStatus(ticket) {
   }
 }
 
+// ─── Middleware de autenticação ───────────────────────────────────────────
+function requireAuth(req, res, next) {
+  const token = req.headers['x-ti-token'];
+  if (!token) return res.status(401).json({ error: 'Não autenticado' });
+  const session = sessions.get(token);
+  if (!session) return res.status(401).json({ error: 'Sessão expirada' });
+  if (Date.now() - session.createdAt > SESSION_TTL) {
+    sessions.delete(token);
+    return res.status(401).json({ error: 'Sessão expirada' });
+  }
+  next();
+}
+
+// ─── Rotas de autenticação ────────────────────────────────────────────────
+app.post('/api/auth/login', (req, res) => {
+  const { user, pass } = req.body;
+  if (user === TI_USER && pass === TI_PASS) {
+    const token = crypto.randomBytes(32).toString('hex');
+    sessions.set(token, { user, createdAt: Date.now() });
+    return res.json({ token, user });
+  }
+  res.status(401).json({ error: 'Credenciais inválidas' });
+});
+
+app.post('/api/auth/logout', (req, res) => {
+  const token = req.headers['x-ti-token'];
+  if (token) sessions.delete(token);
+  res.json({ ok: true });
+});
+
 // ─── Rotas da API ─────────────────────────────────────────────────────────
 
 // Listar tickets
@@ -261,7 +301,7 @@ app.post('/api/tickets', upload.array('anexos', 5), async (req, res) => {
 });
 
 // Atualizar status
-app.patch('/api/tickets/:id/status', async (req, res) => {
+app.patch('/api/tickets/:id/status', requireAuth, async (req, res) => {
   const db = loadDB();
   const t = db.tickets.find(t => t.id === req.params.id);
   if (!t) return res.status(404).json({ error: 'Não encontrado' });
@@ -293,7 +333,7 @@ app.post('/api/tickets/:id/mensagens', async (req, res) => {
 });
 
 // Salvar solução
-app.patch('/api/tickets/:id/solucao', (req, res) => {
+app.patch('/api/tickets/:id/solucao', requireAuth, (req, res) => {
   const db = loadDB();
   const t = db.tickets.find(t => t.id === req.params.id);
   if (!t) return res.status(404).json({ error: 'Não encontrado' });
@@ -315,7 +355,7 @@ app.patch('/api/tickets/:id/avaliacao', (req, res) => {
 });
 
 // Excluir ticket
-app.delete('/api/tickets/:id', (req, res) => {
+app.delete('/api/tickets/:id', requireAuth, (req, res) => {
   const db = loadDB();
   db.tickets = db.tickets.filter(t => t.id !== req.params.id);
   saveDB(db);
@@ -323,7 +363,7 @@ app.delete('/api/tickets/:id', (req, res) => {
 });
 
 // Exportar relatório CSV
-app.get('/api/relatorio/csv', (req, res) => {
+app.get('/api/relatorio/csv', requireAuth, (req, res) => {
   const db = loadDB();
   const header = 'ID,Solicitante,Email,Departamento,Categoria,Prioridade,Status,Titulo,Criado em,Resolvido,Avaliacao\n';
   const rows = db.tickets.map(t =>

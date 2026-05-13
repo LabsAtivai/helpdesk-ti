@@ -16,6 +16,8 @@ services:
       - SMTP_PASS=${SMTP_PASS}
       - EMAIL_TI=${EMAIL_TI}
       - EMAIL_FROM=${EMAIL_FROM}
+      - TI_USER=${TI_USER}
+      - TI_PASS=${TI_PASS}
     volumes:
       # Dados persistentes fora do container
       - helpdesk_data:/app/data
@@ -31,4 +33,4 @@ volumes:
 
 networks:
   ativaai:
-    external: true   # ← isso, não driver: bridge
+    external: true
