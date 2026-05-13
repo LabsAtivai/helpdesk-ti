@@ -7,9 +7,15 @@ services:
     container_name: helpdesk-ti
     restart: unless-stopped
     ports:
-      - "8909:8909"
+      - "3098:3098"
     environment:
-      - PORT=8909
+      - PORT=3098
+      - APP_URL=https://help.labsativa.com.br
+      - DB_HOST=${DB_HOST}
+      - DB_PORT=${DB_PORT}
+      - DB_USER=${DB_USER}
+      - DB_PASS=${DB_PASS}
+      - DB_NAME=${DB_NAME}
       - SMTP_HOST=smtp.gmail.com
       - SMTP_PORT=587
       - SMTP_USER=${SMTP_USER}
@@ -19,15 +25,11 @@ services:
       - TI_USER=${TI_USER}
       - TI_PASS=${TI_PASS}
     volumes:
-      # Dados persistentes fora do container
-      - helpdesk_data:/app/data
       - helpdesk_uploads:/app/public/uploads
     networks:
       - ativaai
 
 volumes:
-  helpdesk_data:
-    driver: local
   helpdesk_uploads:
     driver: local
 

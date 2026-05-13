@@ -3,52 +3,75 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Central de TI</title>
-<link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,wght@0,300;0,400;0,500;0,600;1,400&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<title>Central de Suporte — Labs Ativa</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500;600&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
 <style>
-:root {
-  --bg:#F5F3EE; --surface:#FFFFFF; --surface2:#F0EDE7; --border:#E2DDD6;
-  --text:#1A1816; --text2:#6B6560; --text3:#9B968F;
-  --blue:#2563EB; --blue-bg:#EFF6FF; --blue-border:#BFDBFE;
-  --green:#16A34A; --green-bg:#F0FDF4; --green-border:#BBF7D0;
-  --amber:#D97706; --amber-bg:#FFFBEB; --amber-border:#FDE68A;
-  --red:#DC2626; --red-bg:#FEF2F2; --red-border:#FECACA;
-  --purple:#7C3AED; --purple-bg:#F5F3FF;
-  --r:10px; --rl:14px;
+:root{
+  --bg:#F5F3EE;--surface:#FFF;--surface2:#F0EDE7;--border:#E2DDD6;
+  --text:#1A1816;--text2:#6B6560;--text3:#9B968F;
+  --blue:#2563EB;--blue-bg:#EFF6FF;--blue-border:#BFDBFE;
+  --green:#16A34A;--green-bg:#F0FDF4;--green-border:#BBF7D0;
+  --amber:#D97706;--amber-bg:#FFFBEB;--amber-border:#FDE68A;
+  --red:#DC2626;--red-bg:#FEF2F2;--red-border:#FECACA;
+  --r:10px;--rl:14px;
 }
 *{margin:0;padding:0;box-sizing:border-box}
 body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--text);font-size:14px;min-height:100vh}
 
-/* NAV */
+/* ── AUTH ── */
+.auth-wrap{min-height:100vh;display:flex;align-items:center;justify-content:center;padding:20px}
+.auth-box{background:var(--surface);border:1px solid var(--border);border-radius:var(--rl);padding:36px 32px;width:100%;max-width:420px;box-shadow:0 4px 24px rgba(0,0,0,.06)}
+.auth-logo{display:flex;align-items:center;gap:10px;margin-bottom:6px}
+.auth-logo-icon{width:36px;height:36px;background:var(--text);border-radius:8px;display:flex;align-items:center;justify-content:center}
+.auth-logo-icon svg{color:white}
+.auth-brand{font-size:15px;font-weight:600;letter-spacing:-.02em}
+.auth-brand span{font-size:11px;font-weight:400;color:var(--text3);display:block;letter-spacing:0}
+.auth-title{font-size:20px;font-weight:600;letter-spacing:-.03em;margin-bottom:4px;margin-top:24px}
+.auth-sub{font-size:13px;color:var(--text2);margin-bottom:22px}
+.auth-err{background:var(--red-bg);border:1px solid var(--red-border);color:var(--red);font-size:12px;padding:9px 12px;border-radius:var(--r);margin-bottom:14px;display:none}
+.auth-switch{text-align:center;margin-top:16px;font-size:13px;color:var(--text2)}
+.auth-switch a{color:var(--blue);text-decoration:none;font-weight:500;cursor:pointer}
+.auth-link{text-align:center;margin-top:10px;font-size:12px}
+.auth-link a{color:var(--text3);cursor:pointer;text-decoration:none}
+.auth-link a:hover{color:var(--text2)}
+.auth-divider{display:flex;align-items:center;gap:10px;margin:14px 0;color:var(--text3);font-size:12px}
+.auth-divider::before,.auth-divider::after{content:'';flex:1;height:1px;background:var(--border)}
+
+/* ── APP ── */
 .nav{background:var(--surface);border-bottom:1px solid var(--border);padding:0 24px;display:flex;align-items:center;height:56px;position:sticky;top:0;z-index:100}
-.nav-brand{font-size:15px;font-weight:600;letter-spacing:-.02em;display:flex;align-items:center;gap:8px;margin-right:28px;color:var(--text);text-decoration:none}
+.nav-brand{display:flex;align-items:center;gap:10px;margin-right:28px;text-decoration:none}
+.nav-logo{width:28px;height:28px;background:var(--text);border-radius:6px;display:flex;align-items:center;justify-content:center}
+.nav-logo svg{color:white}
+.nav-name{font-size:14px;font-weight:600;letter-spacing:-.02em;color:var(--text)}
 .nav-tabs{display:flex;gap:2px;flex:1}
-.nav-tab{padding:6px 14px;border-radius:6px;cursor:pointer;font-size:13px;font-weight:500;color:var(--text2);border:none;background:none;font-family:inherit;transition:all .15s;display:flex;align-items:center;gap:6px}
+.nav-tab{padding:6px 14px;border-radius:6px;cursor:pointer;font-size:13px;font-weight:500;color:var(--text2);border:none;background:none;font-family:inherit;transition:all .15s;display:flex;align-items:center;gap:5px}
 .nav-tab:hover{background:var(--surface2);color:var(--text)}
 .nav-tab.active{background:var(--text);color:white}
 .nbadge{background:var(--red);color:white;font-size:10px;font-weight:600;min-width:16px;height:16px;border-radius:99px;padding:0 4px;display:inline-flex;align-items:center;justify-content:center}
+.nav-right{margin-left:auto;display:flex;align-items:center;gap:10px}
+.nav-avatar{width:30px;height:30px;border-radius:50%;background:var(--blue-bg);color:var(--blue);font-size:11px;font-weight:600;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.nav-uname{font-size:12px;color:var(--text2);max-width:140px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.btn-out{padding:5px 12px;font-size:12px;background:none;border:1px solid var(--border);border-radius:var(--r);cursor:pointer;color:var(--text2);font-family:inherit;transition:all .15s}
+.btn-out:hover{background:var(--red-bg);color:var(--red);border-color:var(--red-border)}
 
-/* VIEWS */
-.view{display:none;padding:28px 24px;max-width:1120px;margin:0 auto}
+/* ── VIEWS ── */
+.view{display:none;padding:28px 24px;max-width:1100px;margin:0 auto}
 .view.active{display:block}
 .page-title{font-size:22px;font-weight:600;letter-spacing:-.03em;margin-bottom:4px}
 .page-sub{font-size:13px;color:var(--text2);margin-bottom:24px}
 
-/* CARDS */
+/* ── CARDS ── */
 .card{background:var(--surface);border:1px solid var(--border);border-radius:var(--rl);padding:20px 22px}
-
-/* GRID */
 .g4{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-bottom:24px}
 .g2{display:grid;grid-template-columns:1fr 1fr;gap:16px}
-.g3{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}
 
-/* STATS */
+/* ── STATS ── */
 .stat{background:var(--surface);border:1px solid var(--border);border-radius:var(--rl);padding:18px 20px}
 .stat-lbl{font-size:11px;font-weight:500;color:var(--text3);text-transform:uppercase;letter-spacing:.06em;margin-bottom:8px}
 .stat-val{font-size:28px;font-weight:600;letter-spacing:-.04em;line-height:1;margin-bottom:5px;font-family:'DM Mono',monospace}
 .stat-sub{font-size:12px;color:var(--text2)}
 
-/* BADGES */
+/* ── BADGES ── */
 .badge{display:inline-flex;align-items:center;gap:4px;font-size:11px;font-weight:500;padding:3px 8px;border-radius:99px;white-space:nowrap}
 .bd{width:5px;height:5px;border-radius:50%}
 .ba{background:var(--blue-bg);color:var(--blue)}
@@ -58,7 +81,7 @@ body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--text);fon
 .bn{background:var(--surface2);color:var(--text2)}
 .bh{background:var(--amber-bg);color:var(--amber)}
 
-/* TABLE */
+/* ── TABLE ── */
 .tbl{width:100%;border-collapse:collapse}
 .tbl th{text-align:left;font-size:11px;font-weight:500;color:var(--text3);text-transform:uppercase;letter-spacing:.05em;padding:10px 12px;border-bottom:1px solid var(--border)}
 .tbl td{padding:11px 12px;border-bottom:1px solid var(--border);vertical-align:middle}
@@ -69,40 +92,41 @@ body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--text);fon
 .ttitle{font-weight:500;font-size:13px;margin-bottom:2px}
 .tmeta{font-size:11px;color:var(--text3)}
 
-/* BUTTONS */
+/* ── BUTTONS ── */
 .btn{display:inline-flex;align-items:center;gap:6px;padding:8px 14px;border-radius:var(--r);font-size:13px;font-weight:500;font-family:inherit;cursor:pointer;border:none;transition:all .15s}
 .btn-p{background:var(--text);color:white}.btn-p:hover{background:#333}
 .btn-s{background:var(--surface2);color:var(--text);border:1px solid var(--border)}.btn-s:hover{background:var(--border)}
 .btn-d{background:var(--red-bg);color:var(--red)}.btn-d:hover{background:#fee2e2}
 .btn-g{background:var(--green-bg);color:var(--green)}.btn-g:hover{background:#dcfce7}
 .btn-b{background:var(--blue-bg);color:var(--blue)}.btn-b:hover{background:#dbeafe}
-.btn-sm{padding:5px 10px;font-size:12px}
-.btn-xs{padding:3px 8px;font-size:11px}
+.btn-sm{padding:5px 10px;font-size:12px}.btn-xs{padding:3px 8px;font-size:11px}
 .btn:disabled{opacity:.5;cursor:not-allowed}
 
-/* FORM */
+/* ── FORM ── */
 .fg{margin-bottom:14px}
 .fl{display:block;font-size:12px;font-weight:500;color:var(--text2);margin-bottom:5px}
 .fi,.fs,.ft{width:100%;padding:9px 12px;border:1px solid var(--border);border-radius:var(--r);font-size:13px;font-family:inherit;color:var(--text);background:var(--surface);transition:border-color .15s;outline:none}
 .fi:focus,.fs:focus,.ft:focus{border-color:var(--text);box-shadow:0 0 0 3px rgba(26,24,22,.06)}
-.ft{resize:vertical;min-height:80px;line-height:1.5}
-.fr{display:grid;grid-template-columns:1fr 1fr;gap:12px}
-.ferr{color:var(--red);font-size:11px;margin-top:4px}
+.ft{resize:vertical;min-height:90px;line-height:1.5}
+.fr2{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.pw{position:relative}
+.pw .fi{padding-right:38px}
+.pw-eye{position:absolute;right:10px;top:50%;transform:translateY(-50%);background:none;border:none;cursor:pointer;color:var(--text3);font-size:15px;padding:0;line-height:1}
 
-/* UPLOAD */
-.upload-area{border:1.5px dashed var(--border);border-radius:var(--r);padding:20px;text-align:center;cursor:pointer;transition:all .15s;background:var(--bg)}
+/* ── UPLOAD ── */
+.upload-area{border:1.5px dashed var(--border);border-radius:var(--r);padding:18px;text-align:center;cursor:pointer;transition:all .15s;background:var(--bg)}
 .upload-area:hover,.upload-area.drag{border-color:var(--text);background:var(--surface2)}
 .upload-area p{font-size:13px;color:var(--text2);margin-top:6px}
 .upload-area span{font-size:11px;color:var(--text3)}
-.file-list{display:flex;flex-direction:column;gap:6px;margin-top:10px}
-.file-item{display:flex;align-items:center;gap:8px;padding:7px 10px;background:var(--surface2);border-radius:var(--r);font-size:12px}
-.file-item .fi-name{flex:1;font-weight:500;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
-.file-item .fi-size{color:var(--text3)}
-.file-item .fi-rm{cursor:pointer;color:var(--text3);background:none;border:none;font-size:14px;line-height:1;padding:0 2px}
-.file-item .fi-rm:hover{color:var(--red)}
+.flist{display:flex;flex-direction:column;gap:5px;margin-top:8px}
+.fitem{display:flex;align-items:center;gap:8px;padding:6px 10px;background:var(--surface2);border-radius:var(--r);font-size:12px}
+.fn{flex:1;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;font-weight:500}
+.fsz{color:var(--text3);flex-shrink:0}
+.frm{cursor:pointer;color:var(--text3);background:none;border:none;font-size:14px;line-height:1;padding:0 2px;flex-shrink:0}
+.frm:hover{color:var(--red)}
 
-/* MODAL */
-.mo{display:none;position:fixed;inset:0;background:rgba(0,0,0,.38);z-index:200;align-items:center;justify-content:center;padding:16px}
+/* ── MODAL ── */
+.mo{display:none;position:fixed;inset:0;background:rgba(0,0,0,.4);z-index:200;align-items:center;justify-content:center;padding:16px}
 .mo.open{display:flex}
 .mbox{background:var(--surface);border-radius:var(--rl);width:100%;max-width:600px;max-height:92vh;overflow-y:auto;box-shadow:0 20px 60px rgba(0,0,0,.15)}
 .mh{padding:18px 22px 14px;border-bottom:1px solid var(--border);display:flex;align-items:flex-start;justify-content:space-between;gap:12px;position:sticky;top:0;background:var(--surface);z-index:2}
@@ -111,11 +135,10 @@ body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--text);fon
 .mf{padding:14px 22px;border-top:1px solid var(--border);display:flex;gap:8px;justify-content:flex-end;flex-wrap:wrap}
 .mc{background:none;border:none;cursor:pointer;color:var(--text3);font-size:20px;padding:0;line-height:1;flex-shrink:0}
 
-/* CHAT */
-.chat{max-height:260px;overflow-y:auto;padding:8px 0;display:flex;flex-direction:column;gap:8px}
+/* ── CHAT ── */
+.chat{max-height:240px;overflow-y:auto;padding:8px 0;display:flex;flex-direction:column;gap:8px}
 .msg{max-width:82%}
-.msg-u{align-self:flex-end}
-.msg-t{align-self:flex-start}
+.msg-u{align-self:flex-end}.msg-t{align-self:flex-start}
 .mbub{padding:8px 12px;border-radius:12px;font-size:13px;line-height:1.5}
 .msg-u .mbub{background:var(--text);color:white;border-bottom-right-radius:3px}
 .msg-t .mbub{background:var(--surface2);color:var(--text);border-bottom-left-radius:3px}
@@ -123,771 +146,785 @@ body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--text);fon
 .msg-u .mmet{text-align:right}
 .cir{display:flex;gap:8px;margin-top:10px;border-top:1px solid var(--border);padding-top:10px;align-items:flex-end}
 
-/* TABS */
-.itabs{display:flex;gap:2px;margin-bottom:18px;background:var(--surface2);padding:3px;border-radius:8px;width:fit-content}
-.itab{padding:5px 14px;border-radius:6px;cursor:pointer;font-size:12px;font-weight:500;color:var(--text2);border:none;background:none;font-family:inherit;transition:all .15s}
-.itab.active{background:var(--surface);color:var(--text);box-shadow:0 1px 3px rgba(0,0,0,.08)}
-
-/* CHAMADO CARD */
-.ccard{background:var(--surface);border:1px solid var(--border);border-radius:var(--rl);padding:14px 18px;margin-bottom:8px;cursor:pointer;transition:border-color .15s}
-.ccard:hover{border-color:var(--text)}
-
-/* SUCCESS */
-.suc{text-align:center;padding:28px 20px}
-.suc-ic{width:52px;height:52px;background:var(--green-bg);border-radius:50%;display:flex;align-items:center;justify-content:center;margin:0 auto 14px}
-.suc-num{font-family:'DM Mono',monospace;font-size:22px;font-weight:500;color:var(--blue);margin-bottom:8px}
-
-/* TOAST */
-.toast{position:fixed;bottom:24px;right:24px;background:var(--text);color:white;padding:10px 16px;border-radius:var(--r);font-size:13px;font-weight:500;z-index:999;opacity:0;transform:translateY(8px);transition:all .25s;pointer-events:none}
-.toast.show{opacity:1;transform:translateY(0)}
-
-/* DETAIL */
+/* ── MISC ── */
+.frow{display:flex;gap:8px;margin-bottom:14px;align-items:center;flex-wrap:wrap}
+.fsel{padding:6px 10px;border:1px solid var(--border);border-radius:var(--r);font-size:12px;font-family:inherit;color:var(--text);background:var(--surface);outline:none;cursor:pointer}
+.empty{text-align:center;padding:48px 24px;color:var(--text3)}
 .ds{margin-bottom:16px}
 .dst{font-size:11px;font-weight:500;color:var(--text3);text-transform:uppercase;letter-spacing:.06em;margin-bottom:8px}
-.df{display:flex;justify-content:space-between;align-items:center;padding:7px 0;border-bottom:1px solid var(--border);font-size:13px}
-.df:last-child{border-bottom:none}
-.dfl{color:var(--text2)}
-.dfv{font-weight:500}
-
-/* ANEXO */
-.anx{display:flex;align-items:center;gap:8px;padding:8px 10px;background:var(--surface2);border-radius:var(--r);font-size:12px;text-decoration:none;color:var(--text);transition:background .12s}
+.anx{display:flex;align-items:center;gap:8px;padding:8px 10px;background:var(--surface2);border-radius:var(--r);font-size:12px;text-decoration:none;color:var(--text);margin-bottom:4px;transition:background .12s}
 .anx:hover{background:var(--border)}
-
-/* STARS */
 .stars{display:flex;gap:3px}
 .star{font-size:24px;cursor:pointer;color:var(--border);transition:color .1s;line-height:1}
 .star.on{color:var(--amber)}
-
-/* FILTER */
-.frow{display:flex;gap:8px;margin-bottom:14px;align-items:center;flex-wrap:wrap}
-.fsel{padding:6px 10px;border:1px solid var(--border);border-radius:var(--r);font-size:12px;font-family:inherit;color:var(--text);background:var(--surface);outline:none;cursor:pointer}
-
-/* EMPTY */
-.empty{text-align:center;padding:40px 24px;color:var(--text3)}
-.empty svg{margin-bottom:10px;opacity:.25}
-
-/* CHART BAR */
+.spin{width:14px;height:14px;border:2px solid rgba(255,255,255,.35);border-top-color:white;border-radius:50%;animation:sp .7s linear infinite;display:inline-block}
+@keyframes sp{to{transform:rotate(360deg)}}
+.toast{position:fixed;bottom:24px;right:24px;background:var(--text);color:white;padding:10px 16px;border-radius:var(--r);font-size:13px;font-weight:500;z-index:999;opacity:0;transform:translateY(8px);transition:all .25s;pointer-events:none;max-width:300px}
+.toast.show{opacity:1;transform:translateY(0)}
 .cbar-row{display:flex;align-items:center;gap:10px;margin-bottom:8px}
-.cbar-label{font-size:12px;color:var(--text2);width:150px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.cbar-label{font-size:12px;color:var(--text2);width:160px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
 .cbar-track{flex:1;background:var(--surface2);border-radius:4px;height:8px;overflow:hidden}
 .cbar-fill{height:100%;border-radius:4px;background:var(--blue);transition:width .4s}
 .cbar-count{font-size:12px;color:var(--text3);width:24px;text-align:right}
 
-/* SPINNER */
-.spin{width:16px;height:16px;border:2px solid var(--border);border-top-color:var(--text);border-radius:50%;animation:sp .7s linear infinite;display:inline-block}
-@keyframes sp{to{transform:rotate(360deg)}}
+/* ── CHAMADO CARD (usuário) ── */
+.ccard{background:var(--surface);border:1px solid var(--border);border-radius:var(--rl);padding:16px 18px;margin-bottom:10px;cursor:pointer;transition:all .15s}
+.ccard:hover{border-color:var(--text);box-shadow:0 2px 8px rgba(0,0,0,.06)}
+.ccard-header{display:flex;align-items:flex-start;justify-content:space-between;gap:12px;margin-bottom:8px}
+.ccard-title{font-size:14px;font-weight:500;line-height:1.4}
+.ccard-id{font-family:'DM Mono',monospace;font-size:11px;color:var(--text3);margin-top:2px}
+.ccard-desc{font-size:12px;color:var(--text2);line-height:1.5;margin-bottom:10px}
+.ccard-footer{display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:6px}
 
-/* BADGE dot colors */
-.bd-blue{background:var(--blue)}
-.bd-amber{background:var(--amber)}
-.bd-green{background:var(--green)}
+/* ── NOVO CHAMADO HERO ── */
+.hero{background:var(--text);border-radius:var(--rl);padding:24px 28px;margin-bottom:20px;display:flex;align-items:center;justify-content:space-between;gap:16px;flex-wrap:wrap}
+.hero-text h2{font-size:18px;font-weight:600;color:white;letter-spacing:-.02em;margin-bottom:4px}
+.hero-text p{font-size:13px;color:rgba(255,255,255,.6);line-height:1.5}
 
-@media(max-width:640px){.g4{grid-template-columns:repeat(2,1fr)}.g2{grid-template-columns:1fr}.fr{grid-template-columns:1fr}.frow{flex-direction:column;align-items:stretch}}
+/* ── SUCCESS ── */
+.suc{text-align:center;padding:32px 20px}
+.suc-ic{width:56px;height:56px;background:var(--green-bg);border-radius:50%;display:flex;align-items:center;justify-content:center;margin:0 auto 16px}
+.suc-num{font-family:'DM Mono',monospace;font-size:24px;font-weight:500;color:var(--blue);margin-bottom:8px}
 
-/* LOGIN OVERLAY */
-.login-overlay{position:fixed;inset:0;background:var(--bg);z-index:500;display:flex;align-items:center;justify-content:center;padding:20px}
-.login-box{background:var(--surface);border:1px solid var(--border);border-radius:var(--rl);padding:36px 32px;width:100%;max-width:380px}
-.login-logo{display:flex;align-items:center;gap:10px;margin-bottom:28px}
-.login-logo svg{color:var(--blue)}
-.login-logo span{font-size:17px;font-weight:600;letter-spacing:-.02em}
-.login-title{font-size:18px;font-weight:600;letter-spacing:-.02em;margin-bottom:4px}
-.login-sub{font-size:13px;color:var(--text2);margin-bottom:24px}
-.login-err{background:var(--red-bg);border:1px solid var(--red-border);color:var(--red);font-size:12px;padding:9px 12px;border-radius:var(--r);margin-bottom:14px;display:none}
-
-/* NAV USER INFO */
-.nav-user{display:flex;align-items:center;gap:10px;margin-left:auto}
-.nav-user-name{font-size:12px;color:var(--text2)}
-.btn-logout{padding:5px 12px;font-size:12px;background:none;border:1px solid var(--border);border-radius:var(--r);cursor:pointer;color:var(--text2);font-family:inherit;transition:all .15s}
-.btn-logout:hover{background:var(--red-bg);color:var(--red);border-color:var(--red-border)}
+@media(max-width:640px){
+  .g4{grid-template-columns:repeat(2,1fr)}
+  .g2{grid-template-columns:1fr}
+  .fr2{grid-template-columns:1fr}
+  .frow{flex-direction:column;align-items:stretch}
+  .hero{padding:18px}
+  .auth-box{padding:28px 20px}
+}
 </style>
 </head>
 <body>
 
-<!-- LOGIN OVERLAY -->
-<div class="login-overlay" id="login-overlay">
-  <div class="login-box">
-    <div class="login-logo">
-      <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><rect x="2" y="3" width="20" height="14" rx="2"/><path d="M8 21h8M12 17v4"/></svg>
-      <span>Central TI</span>
+<!-- ══════════════ AUTH ══════════════ -->
+<div id="auth-screen" class="auth-wrap">
+
+  <!-- LOGIN -->
+  <div class="auth-box" id="s-login">
+    <div class="auth-logo">
+      <div class="auth-logo-icon">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><rect x="2" y="3" width="20" height="14" rx="2"/><path d="M8 21h8M12 17v4"/></svg>
+      </div>
+      <div class="auth-brand">Labs Ativa <span>Central de Suporte</span></div>
     </div>
-    <div class="login-title">Acesso restrito</div>
-    <div class="login-sub">Entre com suas credenciais de TI para continuar</div>
-    <div class="login-err" id="login-err">Usuário ou senha incorretos</div>
-    <div class="fg"><label class="fl">Usuário</label><input class="fi" id="login-user" placeholder="admin" autocomplete="username"></div>
-    <div class="fg" style="margin-bottom:20px"><label class="fl">Senha</label><input class="fi" id="login-pass" type="password" placeholder="••••••••" autocomplete="current-password" onkeydown="if(event.key==='Enter')doLogin()"></div>
-    <button class="btn btn-p" style="width:100%" onclick="doLogin()" id="btn-login">Entrar</button>
+    <div class="auth-title">Bem-vindo</div>
+    <div class="auth-sub">Entre na sua conta para abrir ou acompanhar chamados</div>
+    <div class="auth-err" id="l-err"></div>
+    <div class="fg">
+      <label class="fl">E-mail</label>
+      <input class="fi" id="l-email" type="email" placeholder="seu@email.com" autocomplete="email">
+    </div>
+    <div class="fg">
+      <label class="fl">Senha</label>
+      <div class="pw">
+        <input class="fi" id="l-senha" type="password" placeholder="••••••••" autocomplete="current-password" onkeydown="if(event.key==='Enter')doLogin()">
+        <button class="pw-eye" type="button" onclick="togglePw('l-senha',this)">👁</button>
+      </div>
+    </div>
+    <button class="btn btn-p" style="width:100%;margin-bottom:16px;padding:11px" id="btn-login" onclick="doLogin()">Entrar</button>
+    <div class="auth-switch">Não tem conta? <a onclick="showAuth('register')">Criar conta grátis</a></div>
+    <div class="auth-divider">ou</div>
+    <div class="auth-link"><a onclick="showAuth('ti')">Acesso à área de TI →</a></div>
+  </div>
+
+  <!-- CADASTRO -->
+  <div class="auth-box" id="s-register" style="display:none;max-width:460px">
+    <div class="auth-logo">
+      <div class="auth-logo-icon">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><rect x="2" y="3" width="20" height="14" rx="2"/><path d="M8 21h8M12 17v4"/></svg>
+      </div>
+      <div class="auth-brand">Labs Ativa <span>Central de Suporte</span></div>
+    </div>
+    <div class="auth-title">Criar conta</div>
+    <div class="auth-sub">Preencha seus dados para se cadastrar</div>
+    <div class="auth-err" id="r-err"></div>
+    <div class="fr2">
+      <div class="fg"><label class="fl">Nome completo *</label><input class="fi" id="r-nome" placeholder="Ana Souza"></div>
+      <div class="fg"><label class="fl">Departamento *</label><input class="fi" id="r-depto" placeholder="Financeiro, RH..."></div>
+    </div>
+    <div class="fg"><label class="fl">E-mail *</label><input class="fi" id="r-email" type="email" placeholder="seu@email.com"></div>
+    <div class="fg">
+      <label class="fl">Senha * <span style="font-weight:400;color:var(--text3)">(mín. 6 caracteres)</span></label>
+      <div class="pw">
+        <input class="fi" id="r-senha" type="password" placeholder="••••••••" onkeydown="if(event.key==='Enter')doRegister()">
+        <button class="pw-eye" type="button" onclick="togglePw('r-senha',this)">👁</button>
+      </div>
+    </div>
+    <button class="btn btn-p" style="width:100%;margin-bottom:16px;padding:11px" id="btn-reg" onclick="doRegister()">Criar conta</button>
+    <div class="auth-switch">Já tem conta? <a onclick="showAuth('login')">Entrar</a></div>
+  </div>
+
+  <!-- LOGIN TI -->
+  <div class="auth-box" id="s-ti" style="display:none">
+    <div class="auth-logo">
+      <div class="auth-logo-icon" style="background:var(--blue)">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/></svg>
+      </div>
+      <div class="auth-brand">Área TI <span>Acesso restrito</span></div>
+    </div>
+    <div class="auth-title">Painel de TI</div>
+    <div class="auth-sub">Gerenciar todos os chamados e atendimentos</div>
+    <div class="auth-err" id="ti-err"></div>
+    <div class="fg"><label class="fl">Usuário</label><input class="fi" id="ti-u" placeholder="admin" autocomplete="username"></div>
+    <div class="fg">
+      <label class="fl">Senha</label>
+      <div class="pw">
+        <input class="fi" id="ti-p" type="password" placeholder="••••••••" onkeydown="if(event.key==='Enter')doTILogin()">
+        <button class="pw-eye" type="button" onclick="togglePw('ti-p',this)">👁</button>
+      </div>
+    </div>
+    <button class="btn btn-p" style="width:100%;margin-bottom:16px;padding:11px" id="btn-ti" onclick="doTILogin()">Entrar como TI</button>
+    <div class="auth-link"><a onclick="showAuth('login')">← Voltar ao login de usuário</a></div>
   </div>
 </div>
 
+<!-- ══════════════ APP ══════════════ -->
+<div id="app" style="display:none">
 <nav class="nav">
-  <span class="nav-brand">
-    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><rect x="2" y="3" width="20" height="14" rx="2"/><path d="M8 21h8M12 17v4"/></svg>
-    Central TI
-  </span>
+  <a class="nav-brand">
+    <div class="nav-logo"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><rect x="2" y="3" width="20" height="14" rx="2"/><path d="M8 21h8M12 17v4"/></svg></div>
+    <span class="nav-name">Labs Ativa</span>
+  </a>
   <div class="nav-tabs">
-    <button class="nav-tab active" id="tab-user" onclick="switchView('user')">
-      <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="8" r="4"/><path d="M4 20c0-4 3.6-7 8-7s8 3 8 7"/></svg>
-      Usuário
-    </button>
-    <button class="nav-tab ti-only" id="tab-ti" onclick="switchView('ti')" style="display:none">
-      <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/></svg>
-      Painel TI
-      <span class="nbadge" id="nbadge" style="display:none">0</span>
-    </button>
-    <button class="nav-tab ti-only" id="tab-rel" onclick="switchView('rel')" style="display:none">
+    <button class="nav-tab active" id="tab-home" onclick="switchView('home')">
       <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg>
+      <span id="tab-home-label">Meus Chamados</span>
+    </button>
+    <button class="nav-tab" id="tab-novo" onclick="switchView('novo')">
+      <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+      Novo Chamado
+    </button>
+    <button class="nav-tab" id="tab-ti" style="display:none" onclick="switchView('ti')">
+      <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/></svg>
+      Painel TI <span class="nbadge" id="nbadge" style="display:none">0</span>
+    </button>
+    <button class="nav-tab" id="tab-rel" style="display:none" onclick="switchView('rel')">
+      <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg>
       Relatórios
     </button>
   </div>
-  <div class="nav-user" id="nav-user" style="display:none">
-    <span class="nav-user-name" id="nav-user-name"></span>
-    <button class="btn-logout" onclick="doLogout()">Sair</button>
-  </div>
-  <div id="nav-login-btn" style="margin-left:auto">
-    <button class="btn btn-s btn-sm" onclick="showLogin()">
-      <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0110 0v4"/></svg>
-      Área TI
-    </button>
+  <div class="nav-right">
+    <div class="nav-avatar" id="nav-av">?</div>
+    <span class="nav-uname" id="nav-nome"></span>
+    <button class="btn-out" onclick="doLogout()">Sair</button>
   </div>
 </nav>
 
-<!-- ===== USUÁRIO ===== -->
-<div class="view active" id="view-user">
-  <p class="page-title">Suporte de TI</p>
-  <p class="page-sub">Abra um chamado ou acompanhe seus atendimentos</p>
-  <div class="itabs">
-    <button class="itab active" id="utab-novo" onclick="uTab('novo')">Novo chamado</button>
-    <button class="itab" id="utab-meus" onclick="uTab('meus')">Meus chamados</button>
+<!-- VIEW: MEUS CHAMADOS / TODOS (TI) -->
+<div class="view active" id="view-home">
+  <div style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:12px;margin-bottom:20px">
+    <div>
+      <p class="page-title" id="home-title">Meus Chamados</p>
+      <p style="font-size:13px;color:var(--text2)" id="home-sub">Acompanhe o status de cada solicitação</p>
+    </div>
+    <button class="btn btn-p" id="btn-novo-hero" onclick="switchView('novo')">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+      Abrir chamado
+    </button>
   </div>
 
-  <!-- FORM -->
-  <div id="ut-novo">
-    <div class="card" style="max-width:560px">
-      <div id="form-area">
-        <div class="fg"><label class="fl">Seu nome *</label><input class="fi" id="u-nome" placeholder="Ex: Ana Souza"></div>
-        <div class="fr">
-          <div class="fg"><label class="fl">E-mail (opcional)</label><input class="fi" id="u-email" placeholder="para receber atualizações" type="email"></div>
-          <div class="fg"><label class="fl">Departamento *</label><input class="fi" id="u-depto" placeholder="Ex: Financeiro"></div>
-        </div>
-        <div class="fr">
-          <div class="fg">
-            <label class="fl">Categoria *</label>
-            <select class="fs" id="u-cat">
-              <option value="">Selecione...</option>
-              <option>Hardware / Equipamento</option>
-              <option>Rede / Internet</option>
-              <option>Software / Sistema</option>
-              <option>Acesso / Senha</option>
-              <option>E-mail</option>
-              <option>Impressora</option>
-              <option>Outro</option>
-            </select>
-          </div>
-          <div class="fg">
-            <label class="fl">Prioridade *</label>
-            <select class="fs" id="u-pri">
-              <option value="Normal">Normal</option>
-              <option value="Alta">Alta</option>
-              <option value="Urgente">🔴 Urgente — sistema fora do ar</option>
-            </select>
-          </div>
-        </div>
-        <div class="fg"><label class="fl">Título do problema *</label><input class="fi" id="u-titulo" placeholder="Resumo em uma linha..."></div>
-        <div class="fg"><label class="fl">Descrição detalhada *</label><textarea class="ft" id="u-desc" placeholder="Descreva o que está acontecendo, quando começou, mensagem de erro (se houver)..."></textarea></div>
-        <div class="fg">
-          <label class="fl">Anexos (capturas de tela, documentos) — máx. 5 arquivos, 10 MB cada</label>
-          <div class="upload-area" id="upload-area" onclick="document.getElementById('file-input').click()" ondragover="dragOver(event)" ondragleave="dragLeave(event)" ondrop="dropFiles(event)">
-            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" style="color:var(--text3)"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
-            <p>Clique ou arraste arquivos aqui</p>
-            <span>PNG, JPG, PDF, DOCX, ZIP</span>
-          </div>
-          <input type="file" id="file-input" multiple accept=".png,.jpg,.jpeg,.gif,.pdf,.doc,.docx,.txt,.zip" style="display:none" onchange="addFiles(this.files)">
-          <div class="file-list" id="file-list"></div>
-        </div>
-        <div id="form-err" class="ferr" style="display:none;margin-bottom:10px"></div>
-        <button class="btn btn-p" style="width:100%" id="btn-abrir" onclick="abrirChamado()">Abrir chamado</button>
-      </div>
-      <div id="success-area" style="display:none">
-        <div class="suc">
-          <div class="suc-ic"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#16A34A" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg></div>
-          <div class="suc-num" id="suc-num">#0001</div>
-          <p style="font-size:15px;font-weight:500;margin-bottom:6px">Chamado aberto!</p>
-          <p style="font-size:13px;color:var(--text2);margin-bottom:8px">Em breve a equipe de Labs irá analisá-lo.</p>
-          <p style="font-size:12px;color:var(--text3);margin-bottom:20px" id="suc-email-msg"></p>
-          <div style="display:flex;gap:8px;justify-content:center;flex-wrap:wrap">
-            <button class="btn btn-s" onclick="novoForm()">Abrir outro chamado</button>
-            <button class="btn btn-b btn-sm" onclick="uTab('meus')">Ver meus chamados</button>
-          </div>
-        </div>
-      </div>
-    </div>
+  <!-- Stats do usuário -->
+  <div id="user-stats" style="display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-bottom:20px">
+    <div class="stat"><div class="stat-lbl">Total</div><div class="stat-val" id="us-total">0</div><div class="stat-sub">chamados abertos</div></div>
+    <div class="stat"><div class="stat-lbl">Em andamento</div><div class="stat-val" id="us-and" style="color:var(--amber)">0</div><div class="stat-sub">sendo atendidos</div></div>
+    <div class="stat"><div class="stat-lbl">Resolvidos</div><div class="stat-val" id="us-res" style="color:var(--green)">0</div><div class="stat-sub">concluídos</div></div>
   </div>
 
-  <!-- MEUS CHAMADOS -->
-  <div id="ut-meus" style="display:none">
-    <div class="frow">
-      <input class="fi fsel" id="bu-user" placeholder="Buscar..." style="max-width:200px;padding:6px 10px;font-size:12px" oninput="renderUserList()">
-      <select class="fsel" id="fu-status" onchange="renderUserList()">
-        <option value="">Todos os status</option>
-        <option>Aberto</option><option>Em andamento</option><option>Resolvido</option>
-      </select>
+  <!-- Stats do TI (oculto para usuário) -->
+  <div class="g4" id="ti-stats" style="display:none"></div>
+
+  <div class="frow">
+    <input class="fi fsel" id="bu-home" placeholder="Buscar chamado..." style="max-width:220px;padding:6px 10px;font-size:12px" oninput="renderHome()">
+    <select class="fsel" id="fh-status" onchange="renderHome()">
+      <option value="">Todos os status</option>
+      <option>Aberto</option><option>Em andamento</option><option>Resolvido</option>
+    </select>
+    <select class="fsel" id="fh-pri" onchange="renderHome()" style="display:none">
+      <option value="">Prioridade</option><option>Urgente</option><option>Alta</option><option>Normal</option>
+    </select>
+    <select class="fsel" id="fh-cat" onchange="renderHome()" style="display:none">
+      <option value="">Categoria</option>
+      <option>Hardware / Equipamento</option><option>Rede / Internet</option><option>Software / Sistema</option>
+      <option>Acesso / Senha</option><option>E-mail</option><option>Impressora</option><option>Outro</option>
+    </select>
+  </div>
+
+  <!-- Lista usuário -->
+  <div id="home-user-list"></div>
+
+  <!-- Tabela TI -->
+  <div id="home-ti-table" style="display:none">
+    <div class="card" style="padding:0;overflow:hidden">
+      <table class="tbl">
+        <thead><tr>
+          <th style="width:72px">Nº</th><th>Solicitante</th><th>Título</th>
+          <th>Categoria</th><th>Prio.</th><th>Status</th><th>Aberto em</th>
+          <th style="width:110px">Ações</th>
+        </tr></thead>
+        <tbody id="ti-tbody"></tbody>
+      </table>
+      <div id="ti-empty" class="empty" style="display:none"><p>Nenhum chamado encontrado</p></div>
     </div>
-    <div id="user-list"><div class="empty"><p>Carregando...</p></div></div>
   </div>
 </div>
 
-<!-- ===== PAINEL TI ===== -->
+<!-- VIEW: NOVO CHAMADO -->
+<div class="view" id="view-novo">
+  <div class="hero">
+    <div class="hero-text">
+      <h2>Abrir novo chamado</h2>
+      <p>Descreva o problema com o máximo de detalhes possível.<br>Você receberá atualizações por e-mail automaticamente.</p>
+    </div>
+    <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="rgba(255,255,255,.2)" stroke-width="1.5"><rect x="2" y="3" width="20" height="14" rx="2"/><path d="M8 21h8M12 17v4"/></svg>
+  </div>
+
+  <div class="card" style="max-width:580px" id="form-card">
+    <div id="form-area">
+      <div class="fr2">
+        <div class="fg">
+          <label class="fl">Categoria *</label>
+          <select class="fs" id="u-cat">
+            <option value="">Selecione...</option>
+            <option>Hardware / Equipamento</option><option>Rede / Internet</option>
+            <option>Software / Sistema</option><option>Acesso / Senha</option>
+            <option>E-mail</option><option>Impressora</option><option>Outro</option>
+          </select>
+        </div>
+        <div class="fg">
+          <label class="fl">Prioridade *</label>
+          <select class="fs" id="u-pri">
+            <option value="Normal">🟢 Normal</option>
+            <option value="Alta">🟡 Alta</option>
+            <option value="Urgente">🔴 Urgente — fora do ar</option>
+          </select>
+        </div>
+      </div>
+      <div class="fg"><label class="fl">Título do problema *</label><input class="fi" id="u-titulo" placeholder="Ex: Não consigo acessar o sistema de vendas"></div>
+      <div class="fg"><label class="fl">Descrição detalhada *</label><textarea class="ft" id="u-desc" placeholder="Descreva o que está acontecendo, quando começou, mensagem de erro exibida..."></textarea></div>
+      <div class="fg">
+        <label class="fl">Anexos <span style="font-weight:400;color:var(--text3)">(capturas de tela, documentos — máx. 5 arquivos, 10 MB cada)</span></label>
+        <div class="upload-area" id="upload-area" onclick="document.getElementById('file-input').click()" ondragover="dov(event)" ondragleave="dol(event)" ondrop="dod(event)">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" style="color:var(--text3)"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
+          <p>Clique ou arraste arquivos aqui</p><span>PNG, JPG, PDF, DOCX, ZIP</span>
+        </div>
+        <input type="file" id="file-input" multiple accept=".png,.jpg,.jpeg,.gif,.pdf,.doc,.docx,.txt,.zip" style="display:none" onchange="addFiles(this.files)">
+        <div class="flist" id="flist"></div>
+      </div>
+      <div id="f-err" style="color:var(--red);font-size:12px;margin-bottom:10px;display:none"></div>
+      <button class="btn btn-p" style="width:100%;padding:11px" id="btn-abrir" onclick="abrirChamado()">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg>
+        Enviar chamado
+      </button>
+    </div>
+    <div id="suc-area" style="display:none">
+      <div class="suc">
+        <div class="suc-ic"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#16A34A" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg></div>
+        <div class="suc-num" id="suc-num">#0001</div>
+        <p style="font-size:16px;font-weight:500;margin-bottom:6px">Chamado aberto com sucesso!</p>
+        <p style="font-size:13px;color:var(--text2);margin-bottom:6px">Nossa equipe de TI irá analisar em breve.</p>
+        <p style="font-size:12px;color:var(--text3);margin-bottom:24px">Confirmação enviada para <strong id="suc-email"></strong></p>
+        <div style="display:flex;gap:8px;justify-content:center;flex-wrap:wrap">
+          <button class="btn btn-p" onclick="novoForm()">Abrir outro chamado</button>
+          <button class="btn btn-s" onclick="switchView('home')">Ver meus chamados</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- VIEW: PAINEL TI -->
 <div class="view" id="view-ti">
   <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:4px">
-    <p class="page-title" style="margin-bottom:0">Painel LABS</p>
-    <button class="btn btn-s btn-sm" onclick="loadTI()"><span id="refresh-icon">↻</span> Atualizar</button>
+    <p class="page-title" style="margin-bottom:0">Painel TI</p>
+    <button class="btn btn-s btn-sm" onclick="loadTI()">↻ Atualizar</button>
   </div>
-  <p class="page-sub">Gerencie todos os chamados</p>
+  <p class="page-sub">Gerencie e responda todos os chamados</p>
   <div class="g4" id="stats-area"></div>
   <div class="frow">
-    <input class="fi fsel" id="bu-ti" placeholder="Buscar..." style="max-width:200px;padding:6px 10px;font-size:12px" oninput="renderTI()">
-    <select class="fsel" id="f-status" onchange="renderTI()"><option value="">Todos</option><option>Aberto</option><option>Em andamento</option><option>Resolvido</option></select>
-    <select class="fsel" id="f-pri" onchange="renderTI()"><option value="">Prioridade</option><option>Urgente</option><option>Alta</option><option>Normal</option></select>
-    <select class="fsel" id="f-cat" onchange="renderTI()"><option value="">Categoria</option><option>Hardware / Equipamento</option><option>Rede / Internet</option><option>Software / Sistema</option><option>Acesso / Senha</option><option>E-mail</option><option>Impressora</option><option>Outro</option></select>
+    <input class="fi fsel" id="bu-ti" placeholder="Buscar..." style="max-width:220px;padding:6px 10px;font-size:12px" oninput="renderTI()">
+    <select class="fsel" id="f-st" onchange="renderTI()"><option value="">Todos</option><option>Aberto</option><option>Em andamento</option><option>Resolvido</option></select>
+    <select class="fsel" id="f-pr" onchange="renderTI()"><option value="">Prioridade</option><option>Urgente</option><option>Alta</option><option>Normal</option></select>
+    <select class="fsel" id="f-ca" onchange="renderTI()"><option value="">Categoria</option><option>Hardware / Equipamento</option><option>Rede / Internet</option><option>Software / Sistema</option><option>Acesso / Senha</option><option>E-mail</option><option>Impressora</option><option>Outro</option></select>
   </div>
   <div class="card" style="padding:0;overflow:hidden">
     <table class="tbl">
-      <thead><tr>
-        <th style="width:72px">Nº</th>
-        <th>Solicitante</th>
-        <th>Título</th>
-        <th>Categoria</th>
-        <th>Prio.</th>
-        <th>Status</th>
-        <th>Aberto em</th>
-        <th style="width:110px">Ações</th>
-      </tr></thead>
-      <tbody id="ti-tbody"></tbody>
+      <thead><tr><th style="width:72px">Nº</th><th>Solicitante</th><th>Título</th><th>Categoria</th><th>Prio.</th><th>Status</th><th>Aberto em</th><th style="width:110px">Ações</th></tr></thead>
+      <tbody id="ti-tbody2"></tbody>
     </table>
-    <div id="ti-empty" class="empty" style="display:none">
-      <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="12" cy="12" r="10"/><line x1="4.93" y1="4.93" x2="19.07" y2="19.07"/></svg>
-      <p>Nenhum chamado encontrado</p>
-    </div>
+    <div id="ti-empty2" class="empty" style="display:none"><p>Nenhum chamado encontrado</p></div>
   </div>
 </div>
 
-<!-- ===== RELATÓRIOS ===== -->
+<!-- VIEW: RELATÓRIOS -->
 <div class="view" id="view-rel">
   <p class="page-title">Relatórios</p>
-  <p class="page-sub">Visão geral e exportação dos chamados</p>
+  <p class="page-sub">Visão consolidada dos atendimentos</p>
   <div class="g4" id="rel-stats" style="margin-bottom:20px"></div>
   <div class="g2">
-    <div class="card">
-      <div style="font-size:13px;font-weight:500;margin-bottom:14px">Chamados por categoria</div>
-      <div id="chart-cat"></div>
-    </div>
-    <div class="card">
-      <div style="font-size:13px;font-weight:500;margin-bottom:14px">Chamados por status</div>
-      <div id="chart-status"></div>
-    </div>
+    <div class="card"><div style="font-size:13px;font-weight:500;margin-bottom:14px">Por categoria</div><div id="chart-cat"></div></div>
+    <div class="card"><div style="font-size:13px;font-weight:500;margin-bottom:14px">Por status</div><div id="chart-st"></div></div>
   </div>
   <div class="card" style="margin-top:16px">
-    <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:12px">
+    <div style="display:flex;align-items:center;justify-content:space-between">
       <div>
-        <div style="font-size:13px;font-weight:500">Exportar dados</div>
-        <div style="font-size:12px;color:var(--text2);margin-top:2px">Baixar planilha com todos os chamados</div>
+        <div style="font-size:13px;font-weight:500">Exportar todos os chamados</div>
+        <div style="font-size:12px;color:var(--text2);margin-top:2px">Abre no Excel ou Google Planilhas</div>
       </div>
       <button class="btn btn-p" onclick="exportCSV()">
         <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
         Baixar CSV
       </button>
     </div>
-    <p style="font-size:12px;color:var(--text3)">Abre no Excel ou Google Planilhas. Inclui: ID, solicitante, departamento, categoria, prioridade, status, título, data de abertura e avaliação.</p>
   </div>
 </div>
+</div><!-- #app -->
 
-<!-- MODAL -->
-<div class="mo" id="modal" onclick="closeModal(event)">
-  <div class="mbox" id="mbox"></div>
-</div>
-
+<!-- MODAL DETALHE -->
+<div class="mo" id="modal" onclick="closeModal(event)"><div class="mbox" id="mbox"></div></div>
 <div class="toast" id="toast"></div>
 
 <script>
 const API = '';
-let tiTickets = [];
-let userTickets = [];
-let selectedFiles = [];
-let isLoggedIn = false;
+let role = null;
+let user = null; // { token, nome, email, depto }
+let allTickets = [];
+let selFiles = [];
 
-// ─── AUTH ─────────────────────────────────────────────────────────────────
-function showLogin(){
-  document.getElementById('login-overlay').style.display='flex';
-  setTimeout(()=>document.getElementById('login-user').focus(), 100);
+// ── utils ──────────────────────────────────────────────────────────────────
+const $ = id => document.getElementById(id);
+function fmtD(iso){const d=new Date(iso);return d.toLocaleDateString('pt-BR')+' '+d.toLocaleTimeString('pt-BR',{hour:'2-digit',minute:'2-digit'})}
+function fmtR(iso){const d=Date.now()-new Date(iso).getTime();if(d<60000)return 'agora';if(d<3600000)return Math.floor(d/60000)+'min';if(d<86400000)return Math.floor(d/3600000)+'h';return Math.floor(d/86400000)+'d'}
+function fmtSz(b){if(b<1024)return b+'B';if(b<1048576)return(b/1024).toFixed(1)+'KB';return(b/1048576).toFixed(1)+'MB'}
+function initials(n){return(n||'?').split(' ').map(w=>w[0]).slice(0,2).join('').toUpperCase()}
+function toast(msg,dur=3000){const el=$('toast');el.textContent=msg;el.classList.add('show');setTimeout(()=>el.classList.remove('show'),dur)}
+function aH(){return{'Content-Type':'application/json','x-token':user?.token||''}}
+function togglePw(id,btn){const el=$(id);el.type=el.type==='password'?'text':'password';btn.textContent=el.type==='password'?'👁':'🙈'}
+function sbadge(s){const m={Aberto:`<span class="badge ba"><span class="bd" style="background:var(--blue)"></span>Aberto</span>`,'Em andamento':`<span class="badge bw"><span class="bd" style="background:var(--amber)"></span>Em andamento</span>`,Resolvido:`<span class="badge br"><span class="bd" style="background:var(--green)"></span>Resolvido</span>`};return m[s]||s}
+function pbadge(p){if(p==='Urgente')return`<span class="badge bu">🔴 Urgente</span>`;if(p==='Alta')return`<span class="badge bh">🟡 Alta</span>`;return`<span class="badge bn">Normal</span>`}
+function ficon(t){if(/image/.test(t))return'🖼️';if(/pdf/.test(t))return'📄';if(/zip/.test(t))return'🗜️';return'📎'}
+
+// ── AUTH ───────────────────────────────────────────────────────────────────
+function showAuth(s){
+  ['s-login','s-register','s-ti'].forEach(id=>$(id).style.display='none');
+  $('s-'+s).style.display='';
+  ['l-err','r-err','ti-err'].forEach(id=>{const el=$(id);if(el){el.style.display='none';el.textContent=''}});
 }
-function hideLogin(){
-  document.getElementById('login-overlay').style.display='none';
-}
+
+function setBtn(id,loading,label){const b=$(id);b.disabled=loading;b.innerHTML=loading?'<span class="spin"></span> Aguarde...':label;}
 
 async function doLogin(){
-  const user = document.getElementById('login-user').value.trim();
-  const pass = document.getElementById('login-pass').value;
-  const btn  = document.getElementById('btn-login');
-  const err  = document.getElementById('login-err');
-  err.style.display='none';
-  btn.disabled=true; btn.textContent='Verificando...';
+  const email=$('l-email').value.trim(), senha=$('l-senha').value;
+  const err=$('l-err'); err.style.display='none';
+  if(!email||!senha){err.textContent='Preencha e-mail e senha';err.style.display='';return;}
+  setBtn('btn-login',true,'Entrar');
   try{
-    const res = await fetch(API+'/api/auth/login',{
-      method:'POST',
-      headers:{'Content-Type':'application/json'},
-      body: JSON.stringify({user, pass})
-    });
-    if(res.ok){
-      const data = await res.json();
-      isLoggedIn = true;
-      sessionStorage.setItem('ti_token', data.token);
-      sessionStorage.setItem('ti_user', data.user);
-      hideLogin();
-      onLoginSuccess(data.user);
-    } else {
-      err.style.display='';
-      document.getElementById('login-pass').value='';
-      document.getElementById('login-pass').focus();
-    }
-  }catch{
-    err.textContent='Erro de conexão. Tente novamente.';
-    err.style.display='';
-  }
-  btn.disabled=false; btn.textContent='Entrar';
+    const r=await fetch('/api/users/login',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({email,senha})});
+    const d=await r.json();
+    if(!r.ok){err.textContent=d.error||'Erro ao entrar';err.style.display='';return;}
+    startSession({...d,role:'user'});
+  }catch{err.textContent='Erro de conexão. Tente novamente.';err.style.display='';}
+  setBtn('btn-login',false,'Entrar');
 }
 
-function onLoginSuccess(username){
-  isLoggedIn = true;
-  document.querySelectorAll('.ti-only').forEach(el=>el.style.display='');
-  document.getElementById('nav-user').style.display='flex';
-  document.getElementById('nav-user-name').textContent=username;
-  document.getElementById('nav-login-btn').style.display='none';
-  switchView('ti');
+async function doRegister(){
+  const nome=$('r-nome').value.trim(),depto=$('r-depto').value.trim(),email=$('r-email').value.trim(),senha=$('r-senha').value;
+  const err=$('r-err'); err.style.display='none';
+  if(!nome||!depto||!email||!senha){err.textContent='Preencha todos os campos';err.style.display='';return;}
+  if(senha.length<6){err.textContent='Senha deve ter ao menos 6 caracteres';err.style.display='';return;}
+  setBtn('btn-reg',true,'Criar conta');
+  try{
+    const r=await fetch('/api/users/register',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({nome,depto,email,senha})});
+    const d=await r.json();
+    if(!r.ok){err.textContent=d.error||'Erro ao cadastrar';err.style.display='';return;}
+    startSession({...d,role:'user'});
+  }catch{err.textContent='Erro de conexão.';err.style.display='';}
+  setBtn('btn-reg',false,'Criar conta');
+}
+
+async function doTILogin(){
+  const u=$('ti-u').value.trim(),p=$('ti-p').value;
+  const err=$('ti-err'); err.style.display='none';
+  if(!u||!p){err.textContent='Preencha usuário e senha';err.style.display='';return;}
+  setBtn('btn-ti',true,'Entrar como TI');
+  try{
+    const r=await fetch('/api/ti/login',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({user:u,pass:p})});
+    const d=await r.json();
+    if(!r.ok){err.textContent=d.error||'Credenciais inválidas';err.style.display='';return;}
+    startSession({token:d.token,nome:'TI Admin',email:'',depto:'TI',role:'ti'});
+  }catch{err.textContent='Erro de conexão.';err.style.display='';}
+  setBtn('btn-ti',false,'Entrar como TI');
+}
+
+function startSession(data){
+  user={token:data.token,nome:data.nome,email:data.email,depto:data.depto};
+  role=data.role;
+  sessionStorage.setItem('hd_sess',JSON.stringify({...user,role}));
+
+  $('nav-av').textContent=initials(data.nome);
+  $('nav-nome').textContent=data.nome;
+
+  if(role==='ti'){
+    $('tab-ti').style.display='';
+    $('tab-rel').style.display='';
+    $('tab-novo').style.display='none';
+    $('tab-home-label').textContent='Todos os Chamados';
+    $('home-title').textContent='Todos os Chamados';
+    $('home-sub').textContent='Visão completa de todos os chamados registrados';
+    $('btn-novo-hero').style.display='none';
+    $('user-stats').style.display='none';
+    $('ti-stats').style.display='';
+    $('home-user-list').style.display='none';
+    $('home-ti-table').style.display='';
+    $('fh-pri').style.display='';
+    $('fh-cat').style.display='';
+  }
+
+  $('auth-screen').style.display='none';
+  $('app').style.display='';
+  switchView('home');
+  if(role==='ti') loadTI();
+  else loadUserHome();
 }
 
 function doLogout(){
-  isLoggedIn = false;
-  sessionStorage.removeItem('ti_token');
-  sessionStorage.removeItem('ti_user');
-  document.querySelectorAll('.ti-only').forEach(el=>el.style.display='none');
-  document.getElementById('nav-user').style.display='none';
-  document.getElementById('nav-login-btn').style.display='';
-  switchView('user');
+  fetch('/api/auth/logout',{method:'POST',headers:aH()}).catch(()=>{});
+  sessionStorage.removeItem('hd_sess');
+  user=null; role=null; allTickets=[];
+  $('app').style.display='none';
+  $('auth-screen').style.display='flex';
+  // reset nav
+  $('tab-ti').style.display='none';
+  $('tab-rel').style.display='none';
+  $('tab-novo').style.display='';
+  $('tab-home-label').textContent='Meus Chamados';
+  $('ti-stats').style.display='none';
+  $('user-stats').style.display='';
+  $('home-user-list').style.display='';
+  $('home-ti-table').style.display='none';
+  $('fh-pri').style.display='none';
+  $('fh-cat').style.display='none';
+  showAuth('login');
+  $('l-senha').value='';
   toast('Sessão encerrada');
 }
 
-// Restaurar sessão ao recarregar página
-(function checkSession(){
-  const token = sessionStorage.getItem('ti_token');
-  const user  = sessionStorage.getItem('ti_user');
-  if(token && user) onLoginSuccess(user);
+// Restaurar sessão
+(function(){
+  const s=sessionStorage.getItem('hd_sess');
+  if(s){try{startSession(JSON.parse(s));}catch{sessionStorage.removeItem('hd_sess');}}
 })();
 
-// ─── utils ───────────────────────────────────────────────────────────────
-function fmtDate(iso){const d=new Date(iso);return d.toLocaleDateString('pt-BR')+' '+d.toLocaleTimeString('pt-BR',{hour:'2-digit',minute:'2-digit'})}
-function fmtRel(iso){const diff=Date.now()-new Date(iso).getTime();if(diff<60000)return 'agora';if(diff<3600000)return Math.floor(diff/60000)+'min';if(diff<86400000)return Math.floor(diff/3600000)+'h';return Math.floor(diff/86400000)+'d'}
-function fmtSize(b){if(b<1024)return b+'B';if(b<1048576)return (b/1024).toFixed(1)+'KB';return (b/1048576).toFixed(1)+'MB'}
-
-function toast(msg, dur=2800){
-  const el=document.getElementById('toast');
-  el.textContent=msg; el.classList.add('show');
-  setTimeout(()=>el.classList.remove('show'), dur);
-}
-
-function sbadge(s){
-  if(s==='Aberto') return `<span class="badge ba"><span class="bd bd-blue"></span>Aberto</span>`;
-  if(s==='Em andamento') return `<span class="badge bw"><span class="bd bd-amber"></span>Em andamento</span>`;
-  if(s==='Resolvido') return `<span class="badge br"><span class="bd bd-green"></span>Resolvido</span>`;
-  return s;
-}
-function pbadge(p){
-  if(p==='Urgente') return `<span class="badge bu">🔴 Urgente</span>`;
-  if(p==='Alta') return `<span class="badge bh">🟡 Alta</span>`;
-  return `<span class="badge bn">Normal</span>`;
-}
-function fileIcon(tipo){
-  if(/image/.test(tipo)) return '🖼️';
-  if(/pdf/.test(tipo)) return '📄';
-  if(/zip/.test(tipo)) return '🗜️';
-  return '📎';
-}
-
-function authHeaders(){
-  const token = sessionStorage.getItem('ti_token');
-  return token ? {'Content-Type':'application/json','x-ti-token':token} : {'Content-Type':'application/json'};
-}
-
-// ─── nav ─────────────────────────────────────────────────────────────────
+// ── NAV ────────────────────────────────────────────────────────────────────
 function switchView(v){
   document.querySelectorAll('.view').forEach(e=>e.classList.remove('active'));
   document.querySelectorAll('.nav-tab').forEach(e=>e.classList.remove('active'));
-  document.getElementById('view-'+v).classList.add('active');
-  document.getElementById('tab-'+v).classList.add('active');
+  $('view-'+v).classList.add('active');
+  const tab=$('tab-'+(v==='novo'?'novo':v==='ti'?'ti':v==='rel'?'rel':'home'));
+  if(tab) tab.classList.add('active');
+  if(v==='home'){ if(role==='ti') renderTIHome(); else loadUserHome(); }
   if(v==='ti') loadTI();
   if(v==='rel') loadRel();
-  if(v==='user') renderUserList();
-}
-function uTab(t){
-  ['novo','meus'].forEach(x=>{
-    document.getElementById('utab-'+x).classList.toggle('active',x===t);
-    document.getElementById('ut-'+x).style.display=x===t?'':'none';
-  });
-  if(t==='meus') renderUserList();
 }
 
-// ─── upload ───────────────────────────────────────────────────────────────
-function addFiles(files){
-  for(const f of files){
-    if(selectedFiles.length>=5){toast('Máximo 5 arquivos');break;}
-    if(f.size>10*1024*1024){toast(f.name+': arquivo muito grande (máx 10MB)');continue;}
-    if(!selectedFiles.find(x=>x.name===f.name&&x.size===f.size)) selectedFiles.push(f);
-  }
-  renderFileList();
-  document.getElementById('file-input').value='';
-}
-function renderFileList(){
-  const el=document.getElementById('file-list');
-  el.innerHTML=selectedFiles.map((f,i)=>`
-    <div class="file-item">
-      <span>${fileIcon(f.type)}</span>
-      <span class="fi-name">${f.name}</span>
-      <span class="fi-size">${fmtSize(f.size)}</span>
-      <button class="fi-rm" onclick="removeFile(${i})">✕</button>
-    </div>
-  `).join('');
-}
-function removeFile(i){selectedFiles.splice(i,1);renderFileList();}
-function dragOver(e){e.preventDefault();document.getElementById('upload-area').classList.add('drag')}
-function dragLeave(){document.getElementById('upload-area').classList.remove('drag')}
-function dropFiles(e){e.preventDefault();dragLeave();addFiles(e.dataTransfer.files)}
-
-// ─── abrir chamado ────────────────────────────────────────────────────────
-async function abrirChamado(){
-  const nome=document.getElementById('u-nome').value.trim();
-  const email=document.getElementById('u-email').value.trim();
-  const depto=document.getElementById('u-depto').value.trim();
-  const cat=document.getElementById('u-cat').value;
-  const pri=document.getElementById('u-pri').value;
-  const titulo=document.getElementById('u-titulo').value.trim();
-  const desc=document.getElementById('u-desc').value.trim();
-  const errEl=document.getElementById('form-err');
-
-  if(!nome||!depto||!cat||!titulo||!desc){
-    errEl.textContent='Preencha todos os campos obrigatórios (*)';
-    errEl.style.display='';
-    return;
-  }
-  errEl.style.display='none';
-
-  const btn=document.getElementById('btn-abrir');
-  btn.disabled=true; btn.innerHTML='<span class="spin"></span> Enviando...';
-
-  const fd=new FormData();
-  fd.append('nome',nome); fd.append('email',email); fd.append('depto',depto);
-  fd.append('cat',cat); fd.append('pri',pri); fd.append('titulo',titulo); fd.append('desc',desc);
-  selectedFiles.forEach(f=>fd.append('anexos',f));
-
+// ── HOME USUÁRIO ───────────────────────────────────────────────────────────
+async function loadUserHome(){
   try{
-    const res=await fetch(API+'/api/tickets',{method:'POST',body:fd});
-    const t=await res.json();
-    document.getElementById('suc-num').textContent='#'+t.id;
-    document.getElementById('suc-email-msg').textContent=email?'Um e-mail de confirmação foi enviado para '+email+'.':'';
-    document.getElementById('form-area').style.display='none';
-    document.getElementById('success-area').style.display='';
-    selectedFiles=[];
-    updateBadge();
-  }catch(e){
-    errEl.textContent='Erro ao enviar. Verifique sua conexão e tente novamente.';
-    errEl.style.display='';
-  }
-  btn.disabled=false; btn.innerHTML='Abrir chamado';
+    const r=await fetch('/api/tickets',{headers:{'x-token':user.token}});
+    allTickets=await r.json();
+    // stats
+    $('us-total').textContent=allTickets.length;
+    $('us-and').textContent=allTickets.filter(t=>t.status==='Em andamento').length;
+    $('us-res').textContent=allTickets.filter(t=>t.status==='Resolvido').length;
+    renderHome();
+  }catch{toast('Erro ao carregar chamados')}
 }
 
-function novoForm(){
-  ['u-nome','u-email','u-depto','u-titulo','u-desc'].forEach(id=>document.getElementById(id).value='');
-  document.getElementById('u-cat').value='';
-  document.getElementById('u-pri').value='Normal';
-  document.getElementById('file-list').innerHTML='';
-  selectedFiles=[];
-  document.getElementById('form-area').style.display='';
-  document.getElementById('success-area').style.display='none';
-  document.getElementById('form-err').style.display='none';
-}
-
-// ─── user list ────────────────────────────────────────────────────────────
-async function renderUserList(){
-  const busca=(document.getElementById('bu-user').value||'').toLowerCase();
-  const fst=document.getElementById('fu-status').value;
-  let list;
-  try{
-    const res=await fetch(API+'/api/tickets');
-    list=await res.json();
-  }catch{list=[];}
-
-  if(fst) list=list.filter(t=>t.status===fst);
-  if(busca) list=list.filter(t=>t.titulo.toLowerCase().includes(busca)||t.nome.toLowerCase().includes(busca)||t.id.includes(busca));
-
-  const el=document.getElementById('user-list');
-  if(!list.length){el.innerHTML=`<div class="empty"><p>Nenhum chamado encontrado</p></div>`;return;}
-  el.innerHTML=list.map(t=>`
-    <div class="ccard" onclick="openModal('${t.id}','user')">
-      <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:6px">
-        <div style="display:flex;align-items:center;gap:8px">
-          <span class="tid">#${t.id}</span>
-          <span style="font-size:13px;font-weight:500">${t.titulo}</span>
-        </div>
-        <div style="display:flex;gap:5px">${pbadge(t.pri)} ${sbadge(t.status)}</div>
-      </div>
-      <p style="font-size:12px;color:var(--text2);line-height:1.5">${t.desc.length>100?t.desc.slice(0,100)+'…':t.desc}</p>
-      <div style="display:flex;justify-content:space-between;margin-top:8px">
-        <span style="font-size:11px;color:var(--text3)">${t.cat}</span>
-        <span style="font-size:11px;color:var(--text3)">${fmtDate(t.criadoEm)}</span>
-      </div>
-    </div>
-  `).join('');
-}
-
-// ─── TI ───────────────────────────────────────────────────────────────────
-async function loadTI(){
-  document.getElementById('refresh-icon').textContent='…';
-  try{
-    const [res, sRes]=await Promise.all([fetch(API+'/api/tickets'),fetch(API+'/api/stats')]);
-    tiTickets=await res.json();
-    const stats=await sRes.json();
-    renderStats(stats);
-    renderTI();
-    updateBadgeCount(stats.abertos);
-  }catch(e){toast('Erro ao carregar chamados')}
-  document.getElementById('refresh-icon').textContent='↻';
-}
-
-function renderStats(s){
-  document.getElementById('stats-area').innerHTML=[
-    {lbl:'Total',val:s.total,sub:'todos os chamados',c:'var(--text)'},
-    {lbl:'Abertos',val:s.abertos,sub:'aguardando atendimento',c:'var(--blue)'},
-    {lbl:'Em andamento',val:s.andamento,sub:'em atendimento',c:'var(--amber)'},
-    {lbl:'Urgentes',val:s.urgentes,sub:'pendentes',c:s.urgentes>0?'var(--red)':'var(--text)'},
-  ].map(x=>`<div class="stat"><div class="stat-lbl">${x.lbl}</div><div class="stat-val" style="color:${x.c}">${x.val}</div><div class="stat-sub">${x.sub}</div></div>`).join('');
-}
-
-function renderTI(){
-  const busca=(document.getElementById('bu-ti').value||'').toLowerCase();
-  const fst=document.getElementById('f-status').value;
-  const fpri=document.getElementById('f-pri').value;
-  const fcat=document.getElementById('f-cat').value;
-  let list=tiTickets.filter(t=>{
-    if(fst&&t.status!==fst) return false;
-    if(fpri&&t.pri!==fpri) return false;
-    if(fcat&&t.cat!==fcat) return false;
-    if(busca&&!t.titulo.toLowerCase().includes(busca)&&!t.nome.toLowerCase().includes(busca)&&!t.id.includes(busca)) return false;
+function renderHome(){
+  const busca=($('bu-home').value||'').toLowerCase();
+  const fst=$('fh-status').value;
+  const fpri=($('fh-pri')?.value||'');
+  const fcat=($('fh-cat')?.value||'');
+  let list=[...allTickets].filter(t=>{
+    if(fst&&t.status!==fst)return false;
+    if(fpri&&t.pri!==fpri)return false;
+    if(fcat&&t.cat!==fcat)return false;
+    if(busca&&!t.titulo.toLowerCase().includes(busca)&&!(t.nome||'').toLowerCase().includes(busca)&&!t.id.includes(busca))return false;
     return true;
   });
-  const tbody=document.getElementById('ti-tbody');
-  const empty=document.getElementById('ti-empty');
+
+  if(role==='ti'){renderTITable(list,'ti-tbody','ti-empty');return;}
+
+  const el=$('home-user-list');
+  if(!list.length){
+    el.innerHTML=`<div class="empty">
+      <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.2" style="margin-bottom:12px;opacity:.2"><rect x="2" y="3" width="20" height="14" rx="2"/><path d="M8 21h8M12 17v4"/></svg>
+      <p style="font-size:14px;font-weight:500;margin-bottom:4px">${allTickets.length===0?'Nenhum chamado ainda':'Nenhum resultado'}</p>
+      ${allTickets.length===0?`<p style="font-size:13px">Clique em <strong>Abrir chamado</strong> para solicitar suporte</p>`:''}
+    </div>`;
+    return;
+  }
+  el.innerHTML=list.map(t=>`
+    <div class="ccard" onclick="openModal('${t.id}')">
+      <div class="ccard-header">
+        <div>
+          <div class="ccard-title">${t.titulo}</div>
+          <div class="ccard-id">#${t.id} · ${t.cat}</div>
+        </div>
+        <div style="display:flex;flex-direction:column;align-items:flex-end;gap:5px;flex-shrink:0">
+          ${sbadge(t.status)}${pbadge(t.pri)}
+        </div>
+      </div>
+      <div class="ccard-desc">${(t.desc||t.descricao||'').slice(0,120)}${(t.desc||t.descricao||'').length>120?'…':''}</div>
+      <div class="ccard-footer">
+        <span style="font-size:11px;color:var(--text3)">${fmtD(t.criado_em||t.criadoEm)}</span>
+        ${t.mensagens&&t.mensagens.length?`<span style="font-size:11px;color:var(--blue)">💬 ${t.mensagens.length} mensagem${t.mensagens.length>1?'s':''}</span>`:''}
+        ${t.avaliacao?`<span style="font-size:11px;color:var(--amber)">⭐ ${t.avaliacao}/5</span>`:''}
+      </div>
+    </div>`).join('');
+}
+
+// ── HOME TI (painel rápido na aba home) ───────────────────────────────────
+async function renderTIHome(){
+  try{
+    const [tr,sr]=await Promise.all([
+      fetch('/api/tickets',{headers:{'x-token':user.token}}),
+      fetch('/api/stats',{headers:{'x-token':user.token}})
+    ]);
+    allTickets=await tr.json();
+    const s=await sr.json();
+    $('ti-stats').innerHTML=[
+      {l:'Total',v:s.total,c:'var(--text)',sub:'chamados'},
+      {l:'Abertos',v:s.abertos,c:'var(--blue)',sub:'aguardando'},
+      {l:'Em andamento',v:s.andamento,c:'var(--amber)',sub:'em atendimento'},
+      {l:'Urgentes',v:s.urgentes,c:s.urgentes>0?'var(--red)':'var(--text)',sub:'pendentes'},
+    ].map(x=>`<div class="stat"><div class="stat-lbl">${x.l}</div><div class="stat-val" style="color:${x.c}">${x.v}</div><div class="stat-sub">${x.sub}</div></div>`).join('');
+    renderHome();
+    updateBadge(s.abertos);
+  }catch{toast('Erro ao carregar')}
+}
+
+function renderTITable(list,tbodyId,emptyId){
+  const tbody=$(tbodyId), empty=$(emptyId);
   if(!list.length){tbody.innerHTML='';empty.style.display='';return;}
   empty.style.display='none';
   tbody.innerHTML=list.map(t=>`
-    <tr onclick="openModal('${t.id}','ti')">
+    <tr onclick="openModal('${t.id}')">
       <td><span class="tid">#${t.id}</span></td>
       <td><div class="ttitle">${t.nome}</div><div class="tmeta">${t.depto}</div></td>
-      <td><div class="ttitle">${t.titulo}</div><div class="tmeta">${fmtRel(t.criadoEm)}</div></td>
+      <td><div class="ttitle">${t.titulo}</div><div class="tmeta">${fmtR(t.criado_em||t.criadoEm)}</div></td>
       <td><span style="font-size:12px;color:var(--text2)">${t.cat}</span></td>
-      <td>${pbadge(t.pri)}</td>
-      <td>${sbadge(t.status)}</td>
-      <td><span style="font-size:12px;color:var(--text3)">${fmtDate(t.criadoEm)}</span></td>
+      <td>${pbadge(t.pri)}</td><td>${sbadge(t.status)}</td>
+      <td><span style="font-size:12px;color:var(--text3)">${fmtD(t.criado_em||t.criadoEm)}</span></td>
       <td onclick="event.stopPropagation()">
         ${t.status==='Aberto'?`<button class="btn btn-b btn-xs" onclick="setStatus('${t.id}','Em andamento')">Aceitar</button>`:''}
         ${t.status==='Em andamento'?`<button class="btn btn-g btn-xs" onclick="setStatus('${t.id}','Resolvido')">Resolver</button>`:''}
         ${t.status==='Resolvido'?`<span style="font-size:11px;color:var(--green)">✓ Concluído</span>`:''}
       </td>
-    </tr>
-  `).join('');
+    </tr>`).join('');
 }
 
-async function setStatus(id, status){
+// ── TI VIEW ────────────────────────────────────────────────────────────────
+async function loadTI(){
   try{
-    await fetch(API+'/api/tickets/'+id+'/status',{method:'PATCH',headers:authHeaders(),body:JSON.stringify({status})});
-    toast('Status atualizado para: '+status);
-    loadTI();
-  }catch{toast('Erro ao atualizar status')}
+    const [tr,sr]=await Promise.all([
+      fetch('/api/tickets',{headers:{'x-token':user.token}}),
+      fetch('/api/stats',{headers:{'x-token':user.token}})
+    ]);
+    allTickets=await tr.json();
+    const s=await sr.json();
+    $('stats-area').innerHTML=[
+      {l:'Total',v:s.total,c:'var(--text)',sub:'chamados'},
+      {l:'Abertos',v:s.abertos,c:'var(--blue)',sub:'aguardando'},
+      {l:'Em andamento',v:s.andamento,c:'var(--amber)',sub:'em atendimento'},
+      {l:'Urgentes',v:s.urgentes,c:s.urgentes>0?'var(--red)':'var(--text)',sub:'pendentes'},
+    ].map(x=>`<div class="stat"><div class="stat-lbl">${x.l}</div><div class="stat-val" style="color:${x.c}">${x.v}</div><div class="stat-sub">${x.sub}</div></div>`).join('');
+    updateBadge(s.abertos);
+    renderTI();
+  }catch{toast('Erro ao carregar painel')}
 }
 
-// ─── badge ────────────────────────────────────────────────────────────────
-async function updateBadge(){
-  try{const s=await(await fetch(API+'/api/stats')).json();updateBadgeCount(s.abertos);}catch{}
-}
-function updateBadgeCount(n){
-  const el=document.getElementById('nbadge');
-  el.textContent=n; el.style.display=n>0?'':'none';
+function renderTI(){
+  const busca=($('bu-ti').value||'').toLowerCase();
+  const fst=$('f-st').value, fpri=$('f-pr').value, fcat=$('f-ca').value;
+  let list=allTickets.filter(t=>{
+    if(fst&&t.status!==fst)return false;
+    if(fpri&&t.pri!==fpri)return false;
+    if(fcat&&t.cat!==fcat)return false;
+    if(busca&&!t.titulo.toLowerCase().includes(busca)&&!t.nome.toLowerCase().includes(busca)&&!t.id.includes(busca))return false;
+    return true;
+  });
+  renderTITable(list,'ti-tbody2','ti-empty2');
 }
 
-// ─── modal ────────────────────────────────────────────────────────────────
-async function openModal(id, role){
+async function setStatus(id,status){
+  try{
+    await fetch('/api/tickets/'+id+'/status',{method:'PATCH',headers:aH(),body:JSON.stringify({status})});
+    toast('Status atualizado: '+status);
+    if(role==='ti') loadTI();
+  }catch{toast('Erro ao atualizar')}
+}
+
+function updateBadge(n){const el=$('nbadge');el.textContent=n;el.style.display=n>0?'':'none';}
+
+// ── UPLOAD ─────────────────────────────────────────────────────────────────
+function addFiles(f){for(const x of f){if(selFiles.length>=5){toast('Máximo 5 arquivos');break;}if(x.size>10*1024*1024){toast(x.name+': muito grande');continue;}if(!selFiles.find(s=>s.name===x.name&&s.size===x.size))selFiles.push(x);}renderFiles();$('file-input').value='';}
+function renderFiles(){$('flist').innerHTML=selFiles.map((f,i)=>`<div class="fitem"><span>${ficon(f.type)}</span><span class="fn">${f.name}</span><span class="fsz">${fmtSz(f.size)}</span><button class="frm" onclick="rmFile(${i})">✕</button></div>`).join('');}
+function rmFile(i){selFiles.splice(i,1);renderFiles();}
+function dov(e){e.preventDefault();$('upload-area').classList.add('drag')}
+function dol(){$('upload-area').classList.remove('drag')}
+function dod(e){e.preventDefault();dol();addFiles(e.dataTransfer.files)}
+
+// ── ABRIR CHAMADO ──────────────────────────────────────────────────────────
+async function abrirChamado(){
+  const cat=$('u-cat').value,pri=$('u-pri').value,titulo=$('u-titulo').value.trim(),desc=$('u-desc').value.trim();
+  const err=$('f-err'); err.style.display='none';
+  if(!cat||!titulo||!desc){err.textContent='Preencha todos os campos obrigatórios';err.style.display='';return;}
+  const btn=$('btn-abrir');
+  btn.disabled=true;btn.innerHTML='<span class="spin"></span> Enviando...';
+  const fd=new FormData();
+  fd.append('cat',cat);fd.append('pri',pri);fd.append('titulo',titulo);fd.append('desc',desc);
+  selFiles.forEach(f=>fd.append('anexos',f));
+  try{
+    const r=await fetch('/api/tickets',{method:'POST',headers:{'x-token':user.token},body:fd});
+    const t=await r.json();
+    if(!r.ok){err.textContent=t.error||'Erro ao abrir chamado';err.style.display='';return;}
+    $('suc-num').textContent='#'+t.id;
+    $('suc-email').textContent=user.email;
+    $('form-area').style.display='none';
+    $('suc-area').style.display='';
+    selFiles=[];renderFiles();
+    updateBadge(0);
+  }catch{err.textContent='Erro de conexão';err.style.display='';}
+  btn.disabled=false;btn.innerHTML='<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg> Enviar chamado';
+}
+
+function novoForm(){
+  $('u-cat').value='';$('u-pri').value='Normal';$('u-titulo').value='';$('u-desc').value='';
+  selFiles=[];renderFiles();
+  $('form-area').style.display='';$('suc-area').style.display='none';$('f-err').style.display='none';
+}
+
+// ── MODAL ──────────────────────────────────────────────────────────────────
+async function openModal(id){
   let t;
-  try{t=await(await fetch(API+'/api/tickets/'+id)).json();}catch{toast('Erro ao carregar chamado');return;}
+  try{t=await(await fetch('/api/tickets/'+id,{headers:{'x-token':user.token}})).json();}
+  catch{toast('Erro ao carregar chamado');return;}
   const isTI=role==='ti';
-  const isUser=role==='user';
-
-  const chat=t.mensagens.map(m=>`
+  const desc=t.desc||t.descricao||'';
+  const msgs=(t.mensagens||[]).map(m=>`
     <div class="msg ${m.de==='TI'?'msg-t':'msg-u'}">
       <div class="mbub">${m.texto}</div>
-      <div class="mmet">${m.de==='TI'?'🔧 TI':'👤 '+t.nome} · ${fmtRel(m.em)}</div>
-    </div>
-  `).join('') || '<p style="font-size:12px;color:var(--text3);text-align:center;padding:12px">Sem mensagens ainda</p>';
+      <div class="mmet">${m.de==='TI'?'🔧 TI':'👤 '+t.nome} · ${fmtR(m.enviado_em||m.em)}</div>
+    </div>`).join('')||'<p style="font-size:12px;color:var(--text3);text-align:center;padding:12px">Sem mensagens ainda</p>';
 
-  const anexosHtml = t.anexos&&t.anexos.length ? `
-    <div class="ds">
-      <div class="dst">Anexos</div>
-      <div style="display:flex;flex-direction:column;gap:6px">
-        ${t.anexos.map(a=>`
-          <a class="anx" href="/uploads/${a.arquivo}" target="_blank">
-            <span>${fileIcon(a.tipo)}</span>
-            <span style="flex:1;font-weight:500">${a.nome}</span>
-            <span style="color:var(--text3);font-size:11px">${fmtSize(a.tamanho)}</span>
-          </a>
-        `).join('')}
-      </div>
-    </div>` : '';
+  const anexos=(t.anexos||[]).length?`
+    <div class="ds"><div class="dst">Anexos</div>
+      ${(t.anexos||[]).map(a=>`<a class="anx" href="/uploads/${a.arquivo}" target="_blank"><span>${ficon(a.tipo||'')}</span><span style="flex:1;font-weight:500">${a.nome||a.nome_original}</span><span style="font-size:11px;color:var(--text3)">${fmtSz(a.tamanho)}</span></a>`).join('')}
+    </div>`:'';
 
-  const rating = isUser && t.status==='Resolvido' ? `
-    <div class="ds" style="margin-top:14px">
-      <div class="dst">Avaliar atendimento</div>
-      ${t.avaliacao
-        ? `<p style="font-size:13px">Você avaliou com <strong>${t.avaliacao} estrela${t.avaliacao>1?'s':''} ⭐</strong>. Obrigado!</p>`
-        : `<p style="font-size:12px;color:var(--text2);margin-bottom:8px">O chamado foi resolvido? Como foi o atendimento?</p>
-           <div class="stars">${[1,2,3,4,5].map(n=>`<span class="star" data-n="${n}" onclick="avaliar('${id}',${n})" onmouseover="hoverS(${n})" onmouseout="resetS()">★</span>`).join('')}</div>`
-      }
-    </div>` : '';
+  const rating=!isTI&&t.status==='Resolvido'?`
+    <div class="ds" style="margin-top:14px;padding-top:14px;border-top:1px solid var(--border)"><div class="dst">Avaliar este atendimento</div>
+      ${t.avaliacao?`<p style="font-size:13px">Você avaliou com <strong>${t.avaliacao} estrela${t.avaliacao>1?'s':''} ⭐</strong>. Obrigado pelo feedback!</p>`:`
+        <p style="font-size:12px;color:var(--text2);margin-bottom:10px">O problema foi resolvido? Como foi o atendimento?</p>
+        <div class="stars">${[1,2,3,4,5].map(n=>`<span class="star" data-n="${n}" onclick="avaliar('${id}',${n})" onmouseover="hS(${n})" onmouseout="rS()">★</span>`).join('')}</div>`}
+    </div>`:'';
 
-  const solucaoBlock = isTI ? `
-    <div class="ds" style="margin-top:14px">
-      <div class="dst">Solução / registro interno</div>
-      <textarea class="ft" id="msol" placeholder="Descreva o que foi feito...">${t.solucao||''}</textarea>
+  const solucao=isTI?`
+    <div class="ds" style="margin-top:14px"><div class="dst">Solução / Registro interno</div>
+      <textarea class="ft" id="msol" placeholder="Descreva o que foi feito para resolver...">${t.solucao||''}</textarea>
       <button class="btn btn-s btn-sm" style="margin-top:8px" onclick="saveSol('${id}')">Salvar solução</button>
-    </div>` : (t.solucao ? `<div class="ds"><div class="dst">Solução registrada pela TI</div><p style="font-size:13px;line-height:1.6;color:var(--text2)">${t.solucao}</p></div>` : '');
+    </div>`:(t.solucao?`<div class="ds"><div class="dst">Solução da TI</div><p style="font-size:13px;line-height:1.6;color:var(--text2);background:var(--green-bg);padding:12px;border-radius:var(--r)">${t.solucao}</p></div>`:'');
 
-  document.getElementById('mbox').innerHTML = `
+  $('mbox').innerHTML=`
     <div class="mh">
-      <div>
-        <div class="mt">#${t.id} — ${t.titulo}</div>
-        <div style="font-size:12px;color:var(--text3);margin-top:3px">${t.nome} · ${t.depto} · ${fmtDate(t.criadoEm)}</div>
+      <div style="flex:1;min-width:0">
+        <div class="mt" style="white-space:nowrap;overflow:hidden;text-overflow:ellipsis">#${t.id} — ${t.titulo}</div>
+        <div style="font-size:12px;color:var(--text3);margin-top:3px">${t.nome} · ${t.depto} · ${fmtD(t.criado_em||t.criadoEm)}</div>
       </div>
       <button class="mc" onclick="closeModal()">✕</button>
     </div>
     <div class="mb">
-      <div style="display:flex;gap:6px;flex-wrap:wrap;margin-bottom:14px">
+      <div style="display:flex;gap:6px;flex-wrap:wrap;margin-bottom:16px">
         ${sbadge(t.status)} ${pbadge(t.pri)} <span class="badge bn">${t.cat}</span>
         ${t.avaliacao?`<span class="badge" style="background:var(--amber-bg);color:var(--amber)">⭐ ${t.avaliacao}/5</span>`:''}
       </div>
-      <div class="ds">
-        <div class="dst">Descrição</div>
-        <p style="font-size:13px;line-height:1.6;color:var(--text2)">${t.desc}</p>
+      <div class="ds"><div class="dst">Descrição do problema</div>
+        <p style="font-size:13px;line-height:1.6;color:var(--text2)">${desc}</p>
       </div>
-      ${anexosHtml}
-      ${solucaoBlock}
-      <div class="ds">
-        <div class="dst">Conversa</div>
-        <div class="chat" id="mchat">${chat}</div>
+      ${anexos}${solucao}
+      <div class="ds"><div class="dst">Conversa com a TI</div>
+        <div class="chat" id="mchat">${msgs}</div>
         <div class="cir">
-          <textarea class="ft" id="mchatinput" placeholder="Escrever mensagem..." style="min-height:60px;flex:1" onkeydown="if(event.ctrlKey&&event.key==='Enter')sendMsg('${id}','${role}')"></textarea>
-          <button class="btn btn-p btn-sm" onclick="sendMsg('${id}','${role}')">Enviar</button>
+          <textarea class="ft" id="mci" placeholder="Escreva uma mensagem..." style="min-height:56px;flex:1" onkeydown="if(event.ctrlKey&&event.key==='Enter')sendMsg('${id}')"></textarea>
+          <button class="btn btn-p btn-sm" onclick="sendMsg('${id}')">Enviar</button>
         </div>
-        <p style="font-size:11px;color:var(--text3);margin-top:6px">Ctrl+Enter para enviar rápido</p>
+        <p style="font-size:11px;color:var(--text3);margin-top:4px">Ctrl+Enter para enviar</p>
       </div>
       ${rating}
     </div>
     ${isTI?`<div class="mf">
-      ${t.status==='Aberto'?`<button class="btn btn-b" onclick="setStatus('${id}','Em andamento');closeModal();loadTI()">Aceitar chamado</button>`:''}
-      ${t.status==='Em andamento'?`<button class="btn btn-g" onclick="setStatus('${id}','Resolvido');closeModal();loadTI()">Marcar resolvido</button>`:''}
+      ${t.status==='Aberto'?`<button class="btn btn-b" onclick="setStatus('${id}','Em andamento');closeModal();loadTI()">✓ Aceitar chamado</button>`:''}
+      ${t.status==='Em andamento'?`<button class="btn btn-g" onclick="setStatus('${id}','Resolvido');closeModal();loadTI()">✓ Marcar como resolvido</button>`:''}
       <button class="btn btn-d btn-sm" onclick="deletar('${id}')">Excluir</button>
     </div>`:''}
   `;
-  document.getElementById('modal').classList.add('open');
-  const c=document.getElementById('mchat');
-  if(c) c.scrollTop=c.scrollHeight;
+  $('modal').classList.add('open');
+  const c=$('mchat');if(c)c.scrollTop=c.scrollHeight;
 }
 
-function closeModal(e){
-  if(e&&e.target!==document.getElementById('modal')) return;
-  document.getElementById('modal').classList.remove('open');
-}
+function closeModal(e){if(e&&e.target!==$('modal'))return;$('modal').classList.remove('open');}
 
-async function sendMsg(id, role){
-  const el=document.getElementById('mchatinput');
-  const txt=el.value.trim(); if(!txt) return;
-  const de=role==='ti'?'TI':'Usuario';
+async function sendMsg(id){
+  const el=$('mci');const txt=el.value.trim();if(!txt)return;
   try{
-    await fetch(API+'/api/tickets/'+id+'/mensagens',{method:'POST',headers:authHeaders(),body:JSON.stringify({de,texto:txt})});
-    el.value='';
-    openModal(id,role);
-    if(role==='ti') loadTI();
+    await fetch('/api/tickets/'+id+'/mensagens',{method:'POST',headers:aH(),body:JSON.stringify({texto:txt})});
+    el.value='';openModal(id);
+    if(role==='ti')loadTI();else loadUserHome();
   }catch{toast('Erro ao enviar mensagem')}
 }
 
 async function saveSol(id){
-  const sol=document.getElementById('msol').value;
-  try{
-    await fetch(API+'/api/tickets/'+id+'/solucao',{method:'PATCH',headers:authHeaders(),body:JSON.stringify({solucao:sol})});
-    toast('Solução salva!');
-  }catch{toast('Erro ao salvar')}
+  const s=$('msol').value;
+  try{await fetch('/api/tickets/'+id+'/solucao',{method:'PATCH',headers:aH(),body:JSON.stringify({solucao:s})});toast('Solução salva!');}
+  catch{toast('Erro ao salvar')}
 }
 
 async function deletar(id){
-  if(!confirm('Excluir este chamado permanentemente?')) return;
-  try{
-    await fetch(API+'/api/tickets/'+id,{method:'DELETE',headers:authHeaders()});
-    closeModal(); toast('Chamado excluído'); loadTI();
-  }catch{toast('Erro ao excluir')}
+  if(!confirm('Excluir este chamado permanentemente?'))return;
+  try{await fetch('/api/tickets/'+id,{method:'DELETE',headers:aH()});closeModal();toast('Chamado excluído');loadTI();}
+  catch{toast('Erro ao excluir')}
 }
 
-// ─── rating ───────────────────────────────────────────────────────────────
-let _tmpStar=0;
-function hoverS(n){document.querySelectorAll('.star').forEach(s=>s.classList.toggle('on',+s.dataset.n<=n))}
-function resetS(){document.querySelectorAll('.star').forEach(s=>s.classList.toggle('on',+s.dataset.n<=_tmpStar))}
+// ── RATING ─────────────────────────────────────────────────────────────────
+let _s=0;
+function hS(n){document.querySelectorAll('.star').forEach(s=>s.classList.toggle('on',+s.dataset.n<=n))}
+function rS(){document.querySelectorAll('.star').forEach(s=>s.classList.toggle('on',+s.dataset.n<=_s))}
 async function avaliar(id,n){
-  _tmpStar=n;
+  _s=n;
   try{
-    await fetch(API+'/api/tickets/'+id+'/avaliacao',{method:'PATCH',headers:authHeaders(),body:JSON.stringify({avaliacao:n})});
+    await fetch('/api/tickets/'+id+'/avaliacao',{method:'PATCH',headers:aH(),body:JSON.stringify({avaliacao:n})});
     toast('Avaliação enviada! Obrigado ⭐');
-    openModal(id,'user');
+    openModal(id);
+    loadUserHome();
   }catch{toast('Erro ao avaliar')}
 }
 
-// ─── relatórios ───────────────────────────────────────────────────────────
+// ── RELATÓRIOS ──────────────────────────────────────────────────────────────
 async function loadRel(){
   try{
-    const [tr,sr]=await Promise.all([fetch(API+'/api/tickets'),fetch(API+'/api/stats')]);
-    const tickets=await tr.json();
-    const stats=await sr.json();
-    document.getElementById('rel-stats').innerHTML=[
-      {lbl:'Total',val:stats.total,c:'var(--text)'},
-      {lbl:'Resolvidos',val:stats.resolvidos,c:'var(--green)'},
-      {lbl:'Hoje',val:stats.hoje,c:'var(--blue)'},
-      {lbl:'Avaliação média',val:stats.mediaAvaliacao?stats.mediaAvaliacao+' ⭐':'—',c:'var(--amber)'},
-    ].map(x=>`<div class="stat"><div class="stat-lbl">${x.lbl}</div><div class="stat-val" style="color:${x.c};font-size:${x.lbl==='Avaliação média'?'20px':'28px'}">${x.val}</div></div>`).join('');
-    renderBarChart('chart-cat', stats.porCategoria);
-    const byStatus={'Aberto':stats.abertos,'Em andamento':stats.andamento,'Resolvido':stats.resolvidos};
-    renderBarChart('chart-status', byStatus);
+    const s=await(await fetch('/api/stats',{headers:{'x-token':user.token}})).json();
+    $('rel-stats').innerHTML=[
+      {l:'Total',v:s.total,c:'var(--text)'},{l:'Resolvidos',v:s.resolvidos,c:'var(--green)'},
+      {l:'Hoje',v:s.hoje,c:'var(--blue)'},{l:'Avaliação média',v:s.mediaAvaliacao?s.mediaAvaliacao+' ⭐':'—',c:'var(--amber)'},
+    ].map(x=>`<div class="stat"><div class="stat-lbl">${x.l}</div><div class="stat-val" style="color:${x.c};font-size:${x.l==='Avaliação média'?'20px':'28px'}">${x.v}</div></div>`).join('');
+    const bar=(el,data)=>{const e=$(el);const en=Object.entries(data).sort((a,b)=>b[1]-a[1]);const mx=Math.max(...en.map(x=>x[1]),1);e.innerHTML=en.map(([k,v])=>`<div class="cbar-row"><div class="cbar-label" title="${k}">${k}</div><div class="cbar-track"><div class="cbar-fill" style="width:${Math.round(v/mx*100)}%"></div></div><div class="cbar-count">${v}</div></div>`).join('')||'<p style="font-size:12px;color:var(--text3)">Sem dados</p>';};
+    bar('chart-cat',s.porCategoria);
+    bar('chart-st',{Aberto:s.abertos,'Em andamento':s.andamento,Resolvido:s.resolvidos});
   }catch{toast('Erro ao carregar relatórios')}
 }
-
-function renderBarChart(elId, data){
-  const el=document.getElementById(elId);
-  const entries=Object.entries(data).sort((a,b)=>b[1]-a[1]);
-  const max=Math.max(...entries.map(e=>e[1]),1);
-  el.innerHTML=entries.map(([k,v])=>`
-    <div class="cbar-row">
-      <div class="cbar-label" title="${k}">${k}</div>
-      <div class="cbar-track"><div class="cbar-fill" style="width:${Math.round(v/max*100)}%"></div></div>
-      <div class="cbar-count">${v}</div>
-    </div>
-  `).join('') || '<p style="font-size:12px;color:var(--text3)">Sem dados ainda</p>';
-}
-
-function exportCSV(){window.open(API+'/api/relatorio/csv','_blank')}
-
-// ─── init ─────────────────────────────────────────────────────────────────
-updateBadge();
+function exportCSV(){window.open('/api/relatorio/csv','_blank')}
 </script>
 </body>
 </html>
