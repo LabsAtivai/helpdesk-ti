@@ -8,7 +8,7 @@ const path       = require('path');
 const crypto     = require('crypto');
 
 const app  = express();
-const PORT = process.env.PORT || 3098;
+const PORT = process.env.PORT || 8098;
 
 // ─── Config TI ────────────────────────────────────────────────────────────
 const TI_USER = process.env.TI_USER || 'admin';
