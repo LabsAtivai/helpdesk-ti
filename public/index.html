@@ -2,9 +2,13 @@
 <html lang="pt-BR">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
 <title>Central de Suporte — Labs Ativa</title>
 <link rel="manifest" href="/manifest.json">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="Suporte TI">
+<link rel="apple-touch-icon" href="/icon-192.png">
 <meta name="theme-color" content="#1A1816">
 <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500;600&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
 <style>
@@ -188,13 +192,109 @@ body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--text);fon
 .suc-ic{width:56px;height:56px;background:var(--green-bg);border-radius:50%;display:flex;align-items:center;justify-content:center;margin:0 auto 16px}
 .suc-num{font-family:'DM Mono',monospace;font-size:24px;font-weight:500;color:var(--blue);margin-bottom:8px}
 
-@media(max-width:640px){
+/* ── RESPONSIVO TABLET (≤768px) ── */
+@media(max-width:768px){
   .g4{grid-template-columns:repeat(2,1fr)}
   .g2{grid-template-columns:1fr}
+  .tbl-wrap{overflow-x:auto;-webkit-overflow-scrolling:touch;width:100%}
+  .tbl{min-width:600px}
+  .mbox{max-width:100%;margin:0;border-radius:var(--rl) var(--rl) 0 0;max-height:95vh;position:fixed;bottom:0;left:0;right:0}
+  .mo{align-items:flex-end;padding:0}
+  .view{padding:20px 16px}
+}
+
+/* ── RESPONSIVO MOBILE (≤480px) ── */
+@media(max-width:480px){
+  /* Auth */
+  .auth-wrap{padding:12px;align-items:flex-start;padding-top:32px}
+  .auth-box{padding:24px 18px;max-width:100%}
+  .auth-title{font-size:18px}
   .fr2{grid-template-columns:1fr}
+
+  /* Nav mobile — bottom bar */
+  .nav{height:52px;padding:0 16px}
+  .nav-brand{margin-right:12px}
+  .nav-name{display:none}
+  .nav-uname{display:none}
+  .nav-tabs{gap:0}
+  .nav-tab{padding:6px 10px;font-size:12px;gap:3px}
+  .nav-tab svg{display:none}
+  .nav-right{gap:6px}
+  .btn-out{padding:4px 10px;font-size:11px}
+
+  /* Views */
+  .view{padding:16px 12px}
+  .page-title{font-size:18px}
+  .page-sub{font-size:12px;margin-bottom:16px}
+
+  /* Stats */
+  .g4{grid-template-columns:repeat(2,1fr);gap:8px;margin-bottom:16px}
+  #user-stats{grid-template-columns:repeat(3,1fr);gap:8px}
+  .stat{padding:12px 14px}
+  .stat-val{font-size:22px}
+  .stat-lbl{font-size:10px}
+
+  /* Hero */
+  .hero{padding:16px;flex-direction:column;gap:10px}
+  .hero svg{display:none}
+  .hero-text h2{font-size:16px}
+  .hero-text p{font-size:12px}
+
+  /* Cards */
+  .card{padding:14px 14px}
+  .ccard{padding:12px 14px}
+  .ccard-header{flex-direction:column;gap:8px}
+  .ccard-title{font-size:13px}
+
+  /* Form */
+  .fg{margin-bottom:12px}
   .frow{flex-direction:column;align-items:stretch}
-  .hero{padding:18px}
-  .auth-box{padding:28px 20px}
+  .fi,.fs,.ft{font-size:16px} /* evita zoom no iOS */
+
+  /* Upload */
+  .upload-area{padding:14px}
+
+  /* Filtros */
+  .frow{flex-direction:column;gap:6px}
+  .fsel,.frow .fi{width:100%;max-width:100%!important}
+
+  /* Tabela — card stack no mobile */
+  .tbl-wrap{overflow-x:auto;-webkit-overflow-scrolling:touch}
+  .tbl{min-width:540px}
+  .tbl th,.tbl td{padding:8px 10px}
+
+  /* Modal — fullscreen no mobile */
+  .mo{padding:0;align-items:flex-end}
+  .mbox{max-width:100%;width:100%;border-radius:var(--rl) var(--rl) 0 0;max-height:96vh}
+  .mh{padding:14px 16px 12px}
+  .mb{padding:14px 16px}
+  .mf{padding:12px 16px;gap:6px}
+  .mf .btn{flex:1;justify-content:center}
+
+  /* Chat */
+  .chat{max-height:180px}
+  .cir{flex-direction:column;gap:6px}
+  .cir .btn{width:100%;justify-content:center}
+
+  /* Notificações */
+  .notif-wrap{left:12px;right:12px;max-width:100%}
+  .notif{padding:10px 12px}
+
+  /* Relatórios */
+  .g2{grid-template-columns:1fr}
+  .cbar-label{width:120px}
+
+  /* Botões */
+  .btn-sm{padding:6px 12px}
+  .btn{font-size:13px}
+}
+
+/* ── iOS Safari fixes ── */
+@supports (-webkit-touch-callout: none){
+  .fi,.fs,.ft{font-size:16px} /* evita zoom automático */
+  .mo{padding-bottom:env(safe-area-inset-bottom)}
+  .mbox{padding-bottom:env(safe-area-inset-bottom)}
+  .nav{padding-left:max(16px,env(safe-area-inset-left));padding-right:max(16px,env(safe-area-inset-right))}
 }
 
 /* ── NOTIFICAÇÕES ── */
@@ -214,6 +314,38 @@ body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--text);fon
 .notif-green .notif-icon{background:var(--green-bg);color:var(--green)}
 .notif-amber .notif-icon{background:var(--amber-bg);color:var(--amber)}
 .notif-red .notif-icon{background:var(--red-bg);color:var(--red)}
+
+/* ── BOTTOM NAV MOBILE ── */
+@media(max-width:480px){
+  #app .nav .nav-tabs{display:none} /* esconde tabs do topo */
+  .bottom-nav{display:flex!important}
+  .view{padding-bottom:80px} /* espaço para bottom nav */
+}
+.bottom-nav{
+  display:none;
+  position:fixed;bottom:0;left:0;right:0;
+  background:var(--surface);
+  border-top:1px solid var(--border);
+  padding:8px 0;
+  padding-bottom:max(8px,env(safe-area-inset-bottom));
+  z-index:150;
+  justify-content:space-around;
+}
+.bn-item{
+  display:flex;flex-direction:column;align-items:center;gap:3px;
+  cursor:pointer;border:none;background:none;
+  font-family:inherit;font-size:10px;font-weight:500;
+  color:var(--text3);padding:4px 12px;border-radius:var(--r);
+  transition:color .15s;min-width:56px;
+}
+.bn-item.active{color:var(--text)}
+.bn-item svg{width:22px;height:22px;stroke-width:1.8}
+.bn-badge{background:var(--red);color:white;font-size:9px;font-weight:600;
+  min-width:14px;height:14px;border-radius:99px;padding:0 3px;
+  display:inline-flex;align-items:center;justify-content:center;
+  position:absolute;top:-4px;right:-4px}
+.bn-icon-wrap{position:relative;display:inline-flex}
+
 </style>
 </head>
 <body>
@@ -469,10 +601,12 @@ body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--text);fon
     <select class="fsel" id="f-ca" onchange="renderTI()"><option value="">Categoria</option><option>Avanços Comerciais</option><option>Relatório de Listas</option><option>Relatório de Campanhas</option><option>Relatório Comercial</option><option>Looker</option><option>Hardware</option><option>Outro</option></select>
   </div>
   <div class="card" style="padding:0;overflow:hidden">
+    <div class="tbl-wrap">
     <table class="tbl">
       <thead><tr><th style="width:72px">Nº</th><th>Solicitante</th><th>Título</th><th>Categoria</th><th>Prio.</th><th>Status</th><th>Aberto em</th><th style="width:110px">Ações</th></tr></thead>
       <tbody id="ti-tbody2"></tbody>
     </table>
+    </div>
     <div id="ti-empty2" class="empty" style="display:none"><p>Nenhum chamado encontrado</p></div>
   </div>
 </div>
@@ -499,6 +633,34 @@ body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--text);fon
     </div>
   </div>
 </div>
+
+<!-- BOTTOM NAV MOBILE -->
+<nav class="bottom-nav" id="bottom-nav">
+  <button class="bn-item active" id="bn-home" onclick="switchView('home');updateBN('home')">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg>
+    Chamados
+  </button>
+  <button class="bn-item" id="bn-novo" onclick="switchView('novo');updateBN('novo')">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="16"/><line x1="8" y1="12" x2="16" y2="12"/></svg>
+    Novo
+  </button>
+  <button class="bn-item" id="bn-ti" style="display:none" onclick="switchView('ti');updateBN('ti')">
+    <div class="bn-icon-wrap">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/></svg>
+      <span class="bn-badge" id="bn-badge" style="display:none">0</span>
+    </div>
+    Painel
+  </button>
+  <button class="bn-item" id="bn-rel" style="display:none" onclick="switchView('rel');updateBN('rel')">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg>
+    Relatórios
+  </button>
+  <button class="bn-item" id="bn-sair" onclick="doLogout()">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M9 21H5a2 2 0 01-2-2V5a2 2 0 012-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>
+    Sair
+  </button>
+</nav>
+
 </div><!-- #app -->
 
 <!-- NOTIFICAÇÕES -->
@@ -622,6 +784,7 @@ function startSession(data){
 
   $('auth-screen').style.display='none';
   $('app').style.display='';
+  showBNForRole(data.role);
   registerSW().then(() => { connectSSE(); });
   pedirPermissao();
   switchView('home');
@@ -661,7 +824,7 @@ function doLogout(){
 })();
 
 // ── NAV ────────────────────────────────────────────────────────────────────
-function switchView(v){
+function switchView(v){ updateBN(v);
   document.querySelectorAll('.view').forEach(e=>e.classList.remove('active'));
   document.querySelectorAll('.nav-tab').forEach(e=>e.classList.remove('active'));
   $('view-'+v).classList.add('active');
@@ -1142,6 +1305,31 @@ function dismissNotif(id) {
   if (!el || el.classList.contains('hide')) return;
   el.classList.add('hide');
   setTimeout(() => el.remove(), 260);
+}
+
+
+// ── BOTTOM NAV ────────────────────────────────────────────────────────────
+function updateBN(active) {
+  ['home','novo','ti','rel'].forEach(id => {
+    const el = document.getElementById('bn-' + id);
+    if (el) el.classList.toggle('active', id === active);
+  });
+}
+
+function updateBadgeBN(n) {
+  const el = document.getElementById('bn-badge');
+  if (el) { el.textContent = n; el.style.display = n > 0 ? '' : 'none'; }
+}
+
+function showBNForRole(r) {
+  const isTI = r === 'ti';
+  const bnNovo = document.getElementById('bn-novo');
+  const bnTI   = document.getElementById('bn-ti');
+  const bnRel  = document.getElementById('bn-rel');
+  const bnSair = document.getElementById('bn-sair');
+  if (bnNovo) bnNovo.style.display = isTI ? 'none' : '';
+  if (bnTI)   bnTI.style.display   = isTI ? '' : 'none';
+  if (bnRel)  bnRel.style.display  = isTI ? '' : 'none';
 }
 
 </script>
