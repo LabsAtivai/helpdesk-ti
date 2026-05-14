@@ -1,3 +1,5 @@
+process.env.TZ = 'America/Sao_Paulo'; // Força horário de Brasília
+
 const express    = require('express');
 const nodemailer = require('nodemailer');
 const multer     = require('multer');
@@ -8,7 +10,7 @@ const path       = require('path');
 const crypto     = require('crypto');
 
 const app  = express();
-const PORT = process.env.PORT || 8909;
+const PORT = process.env.PORT || 3098;
 
 // ─── Config TI ────────────────────────────────────────────────────────────
 const TI_USER = process.env.TI_USER || 'admin';
@@ -222,18 +224,13 @@ app.get('/api/events', (req, res) => {
   res.setHeader('X-Accel-Buffering', 'no');
   res.flushHeaders();
 
-  const ping = setInterval(() => res.write(':ping
-
-'), 25000);
+  const ping = setInterval(() => res.write(':ping\n\n'), 25000);
   sseClients.set(token, { res, userId: s.userId, role: s.role });
   req.on('close', () => { clearInterval(ping); sseClients.delete(token); });
 });
 
 function broadcast(event, data, filter) {
-  const payload = 'event: ' + event + '
-data: ' + JSON.stringify(data) + '
-
-';
+  const payload = 'event: ' + event + '\ndata: ' + JSON.stringify(data) + '\n\n';
   for (const [, client] of sseClients) {
     if (!filter || filter(client)) {
       try { client.res.write(payload); } catch {}
@@ -455,7 +452,9 @@ app.get('/api/relatorio/csv', requireTI, async (req, res) => {
 
 app.get('/api/stats', requireTI, async (req, res) => {
   try {
-    const hoje = new Date(); hoje.setHours(0,0,0,0);
+    // Hoje em horário de Brasília (America/Sao_Paulo)
+    const agora = new Date();
+    const hoje = new Date(agora.toLocaleDateString('pt-BR', {timeZone:'America/Sao_Paulo'}).split('/').reverse().join('-') + 'T00:00:00');
     const [totais]    = await db('SELECT COUNT(*) as total, SUM(status="Aberto") as abertos, SUM(status="Em andamento") as andamento, SUM(status="Resolvido") as resolvidos, SUM(pri="Urgente" AND status!="Resolvido") as urgentes, SUM(criado_em >= ?) as hoje FROM tickets', [hoje]);
     const categorias  = await db('SELECT cat, COUNT(*) as total FROM tickets GROUP BY cat');
     const avaliacoes  = await db('SELECT AVG(avaliacao) as media FROM tickets WHERE avaliacao IS NOT NULL');
