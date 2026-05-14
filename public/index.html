@@ -622,8 +622,7 @@ function startSession(data){
 
   $('auth-screen').style.display='none';
   $('app').style.display='';
-  connectSSE();
-  registerSW();
+  registerSW().then(() => { connectSSE(); });
   pedirPermissao();
   switchView('home');
   if(role==='ti') loadTI();
@@ -633,6 +632,7 @@ function startSession(data){
 function doLogout(){
   fetch('/api/auth/logout',{method:'POST',headers:aH()}).catch(()=>{});
   if(evtSource){evtSource.close();evtSource=null;}
+  if(sseReconnectTimer){clearTimeout(sseReconnectTimer);sseReconnectTimer=null;}
   if(swReg&&swReg.active){swReg.active.postMessage({type:'STOP_SSE'});}
   sessionStorage.removeItem('hd_sess');
   user=null; role=null; allTickets=[];
@@ -974,112 +974,115 @@ function exportCSV(){window.open('/api/relatorio/csv','_blank')}
 let evtSource = null;
 let notifCount = 0;
 let swReg = null;
+let sseReconnectTimer = null;
 
-// Registra Service Worker (necessário para notificações em background)
+// Registra Service Worker para exibir notificação nativa e tratar clique.
+// Observação: navegador não mantém SSE confiável dentro do Service Worker.
+// Por isso a conexão em tempo real fica na página; quando a aba está oculta,
+// a própria página pede ao SW para mostrar a notificação do sistema.
 async function registerSW() {
-  if (!('serviceWorker' in navigator)) return;
+  if (!('serviceWorker' in navigator)) return null;
   try {
     swReg = await navigator.serviceWorker.register('/sw.js', { scope: '/' });
+    await navigator.serviceWorker.ready;
+    swReg = await navigator.serviceWorker.getRegistration('/') || swReg;
 
-    // Ouve mensagens do SW: clique em notificação ou evento SSE recebido em background
     navigator.serviceWorker.addEventListener('message', e => {
       if (!e.data) return;
-
-      // Usuário clicou numa notificação quando a aba estava em background
       if (e.data.type === 'OPEN_TICKET' && e.data.ticketId) {
         window.focus();
         switchView('home');
         setTimeout(() => openModal(e.data.ticketId), 400);
-        return;
-      }
-
-      // SW recebeu evento SSE enquanto aba estava em background — atualiza UI
-      if (e.data.type === 'SSE_EVENT') {
-        const { event, data } = e.data;
-        if (event === 'novo_chamado' && role === 'ti') {
-          showNotif({ tipo:'red', icon:'🎫', titulo:'Novo chamado #'+data.id, msg:data.titulo+' — '+data.nome, ticketId:data.id });
-          loadTI();
-        }
-        if (event === 'nova_mensagem') {
-          showNotif({ tipo:'blue', icon:'💬', titulo:'Nova mensagem de '+data.de, msg:data.texto, ticketId:data.ticketId });
-          if (role === 'ti') loadTI(); else loadUserHome();
-        }
-        if (event === 'status_atualizado' && role !== 'ti') {
-          const icons = {'Em andamento':'🔧','Resolvido':'✅'};
-          const tipos = {'Em andamento':'amber','Resolvido':'green'};
-          showNotif({ tipo:tipos[data.status]||'blue', icon:icons[data.status]||'📋', titulo:'Chamado #'+data.id+' — '+data.status, msg:data.titulo, ticketId:data.id });
-          loadUserHome();
-        }
-        if (event === 'refresh' && role === 'ti') loadTI();
       }
     });
 
     console.log('✅ Service Worker registrado');
-  } catch(err) { console.warn('SW não registrado:', err); }
-}
-
-// Pede permissão de notificação de forma não intrusiva
-async function pedirPermissao() {
-  if (!('Notification' in window)) return;
-  if (Notification.permission === 'default') {
-    await Notification.requestPermission();
+    return swReg;
+  } catch(err) {
+    console.warn('SW não registrado:', err);
+    return null;
   }
 }
 
-// Envia notificação — funciona em background via SW ou em foreground direto
-// pushNotif — apenas para quando a aba está em foco (SW cuida do background)
-function pushNotif(titulo, msg, tag, ticketId) {
-  // Quando a aba está em foco, a notificação visual já aparece via showNotif()
-  // O SW cuida das notificações nativas quando em background
-  // Aqui só dispara notificação nativa se o SW não estiver ativo
+// Pede permissão de notificação. Em alguns navegadores só funciona após gesto do usuário.
+async function pedirPermissao() {
+  if (!('Notification' in window)) return false;
+  if (Notification.permission === 'default') {
+    try { await Notification.requestPermission(); } catch {}
+  }
+  return Notification.permission === 'granted';
+}
+
+async function showNativeNotif(titulo, msg, tag, ticketId) {
   if (!('Notification' in window)) return;
   if (Notification.permission !== 'granted') return;
-  if (swReg && swReg.active) return; // SW cuida disso
+
+  const options = {
+    body: msg,
+    icon: '/icon-192.png',
+    badge: '/icon-72.png',
+    tag,
+    renotify: true,
+    data: { ticketId }
+  };
+
   try {
-    const n = new Notification(titulo, { body: msg, icon: '/icon-192.png', tag });
-    n.onclick = () => { window.focus(); if (ticketId) openModal(ticketId); n.close(); };
-    setTimeout(() => n.close(), 8000);
+    const reg = swReg || await navigator.serviceWorker?.getRegistration('/');
+    if (reg?.showNotification) {
+      await reg.showNotification(titulo, options);
+      return;
+    }
   } catch {}
+
+  try {
+    const n = new Notification(titulo, options);
+    n.onclick = () => { window.focus(); if (ticketId) openModal(ticketId); n.close(); };
+    setTimeout(() => n.close(), 9000);
+  } catch {}
+}
+
+// Mostra toast no sistema e, se a aba estiver em segundo plano/outra aba,
+// também dispara a notificação nativa do navegador.
+function notifyUser({ tipo, icon, titulo, msg, tag, ticketId, onVisible }) {
+  if (!document.hidden && document.hasFocus()) {
+    showNotif({ tipo, icon, titulo, msg, ticketId });
+    if (typeof onVisible === 'function') onVisible();
+    return;
+  }
+  showNativeNotif(titulo, msg, tag, ticketId);
 }
 
 function connectSSE() {
   if (evtSource) evtSource.close();
+  if (sseReconnectTimer) { clearTimeout(sseReconnectTimer); sseReconnectTimer = null; }
   if (!user?.token) return;
 
-  // Avisa o SW para iniciar a própria conexão SSE (funciona em background)
-  if (swReg && swReg.active) {
-    swReg.active.postMessage({
-      type: 'START_SSE',
-      token: user.token,
-      baseUrl: window.location.origin
-    });
-  } else if (swReg) {
-    // SW registrado mas ainda não ativo — aguarda e tenta de novo
-    swReg.installing?.addEventListener('statechange', function() {
-      if (this.state === 'activated') {
-        navigator.serviceWorker.ready.then(reg => {
-          reg.active.postMessage({ type: 'START_SSE', token: user.token, baseUrl: window.location.origin });
-        });
-      }
-    });
-  }
-
-  // SSE na aba também (para atualização de UI em tempo real quando aba está ativa)
   evtSource = new EventSource('/api/events?token=' + encodeURIComponent(user.token));
 
   evtSource.addEventListener('novo_chamado', e => {
     const d = JSON.parse(e.data);
-    showNotif({ tipo:'red', icon:'🎫', titulo:'Novo chamado #'+d.id, msg:d.titulo+' — '+d.nome, ticketId:d.id });
-    pushNotif('🎫 Novo chamado #'+d.id, d.titulo+' — '+d.nome, 'chamado-'+d.id, d.id);
+    notifyUser({
+      tipo:'red', icon:'🎫',
+      titulo:'Novo chamado #'+d.id,
+      msg:d.titulo+' — '+d.nome,
+      tag:'chamado-'+d.id,
+      ticketId:d.id,
+      onVisible: () => loadTI()
+    });
     loadTI();
   });
 
   evtSource.addEventListener('nova_mensagem', e => {
     const d = JSON.parse(e.data);
-    showNotif({ tipo:'blue', icon:'💬', titulo:'Nova mensagem de '+d.de, msg:d.texto, ticketId:d.ticketId });
-    pushNotif('💬 Nova mensagem de '+d.de, d.texto, 'msg-'+d.ticketId, d.ticketId);
+    notifyUser({
+      tipo:'blue', icon:'💬',
+      titulo:'Nova mensagem de '+d.de,
+      msg:d.texto,
+      tag:'msg-'+d.ticketId,
+      ticketId:d.ticketId,
+      onVisible: () => {}
+    });
     if (role === 'ti') loadTI(); else loadUserHome();
-    // Atualiza modal se estiver aberto no mesmo ticket
     const modal = document.getElementById('modal');
     if (modal.classList.contains('open') && document.querySelector('.mt')?.textContent.includes('#'+d.ticketId)) {
       openModal(d.ticketId);
@@ -1090,14 +1093,24 @@ function connectSSE() {
     const d = JSON.parse(e.data);
     const icons = {'Em andamento':'🔧','Resolvido':'✅'};
     const tipos = {'Em andamento':'amber','Resolvido':'green'};
-    showNotif({ tipo:tipos[d.status]||'blue', icon:icons[d.status]||'📋', titulo:'Chamado #'+d.id+' — '+d.status, msg:d.titulo, ticketId:d.id });
-    pushNotif((icons[d.status]||'📋')+' Chamado #'+d.id+' — '+d.status, d.titulo, 'status-'+d.id, d.id);
+    notifyUser({
+      tipo:tipos[d.status]||'blue',
+      icon:icons[d.status]||'📋',
+      titulo:'Chamado #'+d.id+' — '+d.status,
+      msg:d.titulo,
+      tag:'status-'+d.id,
+      ticketId:d.id,
+      onVisible: () => loadUserHome()
+    });
     loadUserHome();
   });
 
   evtSource.addEventListener('refresh', () => { if (role==='ti') loadTI(); });
 
-  evtSource.onerror = () => { setTimeout(() => { if (user) connectSSE(); }, 5000); };
+  evtSource.onerror = () => {
+    if (evtSource) { evtSource.close(); evtSource = null; }
+    sseReconnectTimer = setTimeout(() => { if (user?.token) connectSSE(); }, 5000);
+  };
 }
 
 function showNotif({ tipo, icon, titulo, msg, ticketId }) {
