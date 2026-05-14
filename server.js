@@ -193,8 +193,11 @@ app.post('/api/users/login', async (req, res) => {
 
 app.post('/api/ti/login', (req, res) => {
   const { user, pass } = req.body;
-  if (user !== TI_USER || pass !== TI_PASS)
+  console.log('[TI Login] tentativa:', user, '| TI_USER configurado:', TI_USER);
+  if (user !== TI_USER || pass !== TI_PASS) {
+    console.log('[TI Login] falhou — verifique TI_USER e TI_PASS no Portainer');
     return res.status(401).json({ error: 'Credenciais inválidas' });
+  }
   const token = crypto.randomBytes(32).toString('hex');
   sessions.set(token, { userId: 'ti', role: 'ti', nome: 'TI Admin', createdAt: Date.now() });
   res.json({ token, user });
