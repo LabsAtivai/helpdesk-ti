@@ -4,6 +4,8 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Central de Suporte — Labs Ativa</title>
+<link rel="manifest" href="/manifest.json">
+<meta name="theme-color" content="#1A1816">
 <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500;600&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
 <style>
 :root{
@@ -621,6 +623,8 @@ function startSession(data){
   $('auth-screen').style.display='none';
   $('app').style.display='';
   connectSSE();
+  registerSW();
+  pedirPermissao();
   switchView('home');
   if(role==='ti') loadTI();
   else loadUserHome();
@@ -965,9 +969,55 @@ async function loadRel(){
 }
 function exportCSV(){window.open('/api/relatorio/csv','_blank')}
 
-// ── NOTIFICAÇÕES SSE ──────────────────────────────────────────────────────
+// ── SERVICE WORKER + NOTIFICAÇÕES ────────────────────────────────────────
 let evtSource = null;
 let notifCount = 0;
+let swReg = null;
+
+// Registra Service Worker (necessário para notificações em background)
+async function registerSW() {
+  if (!('serviceWorker' in navigator)) return;
+  try {
+    swReg = await navigator.serviceWorker.register('/sw.js');
+    // Ouve mensagens do SW (clique em notificação quando aba estava fechada)
+    navigator.serviceWorker.addEventListener('message', e => {
+      if (e.data?.type === 'OPEN_TICKET' && e.data.url) {
+        const match = e.data.url.match(/ticket=([^&]+)/);
+        if (match) openModal(match[1]);
+      }
+    });
+  } catch(e) { console.warn('SW não registrado:', e); }
+}
+
+// Pede permissão de notificação de forma não intrusiva
+async function pedirPermissao() {
+  if (!('Notification' in window)) return;
+  if (Notification.permission === 'default') {
+    await Notification.requestPermission();
+  }
+}
+
+// Envia notificação — funciona em background via SW ou em foreground direto
+function pushNotif(titulo, msg, tag, ticketId) {
+  if (!('Notification' in window)) return;
+  if (Notification.permission !== 'granted') return;
+
+  // Se tem SW registrado e ativo, usa ele (funciona em background)
+  if (swReg && swReg.active) {
+    swReg.active.postMessage({
+      type: 'NOTIFY',
+      titulo, msg, tag,
+      url: ticketId ? `/?ticket=${ticketId}` : '/'
+    });
+  } else {
+    // Fallback direto (só funciona com aba em foco)
+    try {
+      const n = new Notification(titulo, { body: msg, icon: '/icon-192.png', tag });
+      n.onclick = () => { window.focus(); if (ticketId) openModal(ticketId); n.close(); };
+      setTimeout(() => n.close(), 8000);
+    } catch {}
+  }
+}
 
 function connectSSE() {
   if (evtSource) evtSource.close();
@@ -976,68 +1026,38 @@ function connectSSE() {
 
   evtSource.addEventListener('novo_chamado', e => {
     const d = JSON.parse(e.data);
-    showNotif({
-      tipo: 'red',
-      icon: '🎫',
-      titulo: 'Novo chamado #' + d.id,
-      msg: d.titulo + ' — ' + d.nome,
-      onClick: () => { switchView('home'); setTimeout(() => openModal(d.id), 300); }
-    });
+    showNotif({ tipo:'red', icon:'🎫', titulo:'Novo chamado #'+d.id, msg:d.titulo+' — '+d.nome, ticketId:d.id });
+    pushNotif('🎫 Novo chamado #'+d.id, d.titulo+' — '+d.nome, 'chamado-'+d.id, d.id);
     loadTI();
   });
 
   evtSource.addEventListener('nova_mensagem', e => {
     const d = JSON.parse(e.data);
-    showNotif({
-      tipo: 'blue',
-      icon: '💬',
-      titulo: 'Nova mensagem de ' + d.de,
-      msg: d.texto,
-      onClick: () => openModal(d.ticketId)
-    });
+    showNotif({ tipo:'blue', icon:'💬', titulo:'Nova mensagem de '+d.de, msg:d.texto, ticketId:d.ticketId });
+    pushNotif('💬 Nova mensagem de '+d.de, d.texto, 'msg-'+d.ticketId, d.ticketId);
     if (role === 'ti') loadTI(); else loadUserHome();
     // Atualiza modal se estiver aberto no mesmo ticket
     const modal = document.getElementById('modal');
-    if (modal.classList.contains('open') && document.querySelector('.mt')?.textContent.includes('#' + d.ticketId)) {
+    if (modal.classList.contains('open') && document.querySelector('.mt')?.textContent.includes('#'+d.ticketId)) {
       openModal(d.ticketId);
     }
   });
 
   evtSource.addEventListener('status_atualizado', e => {
     const d = JSON.parse(e.data);
-    const icons = { 'Em andamento': '🔧', 'Resolvido': '✅' };
-    const tipos = { 'Em andamento': 'amber', 'Resolvido': 'green' };
-    showNotif({
-      tipo: tipos[d.status] || 'blue',
-      icon: icons[d.status] || '📋',
-      titulo: 'Chamado #' + d.id + ' — ' + d.status,
-      msg: d.titulo,
-      onClick: () => openModal(d.id)
-    });
+    const icons = {'Em andamento':'🔧','Resolvido':'✅'};
+    const tipos = {'Em andamento':'amber','Resolvido':'green'};
+    showNotif({ tipo:tipos[d.status]||'blue', icon:icons[d.status]||'📋', titulo:'Chamado #'+d.id+' — '+d.status, msg:d.titulo, ticketId:d.id });
+    pushNotif((icons[d.status]||'📋')+' Chamado #'+d.id+' — '+d.status, d.titulo, 'status-'+d.id, d.id);
     loadUserHome();
   });
 
-  evtSource.addEventListener('refresh', e => {
-    if (role === 'ti') loadTI();
-  });
+  evtSource.addEventListener('refresh', () => { if (role==='ti') loadTI(); });
 
-  evtSource.onerror = () => {
-    // Reconecta após 5s se cair
-    setTimeout(() => { if (user) connectSSE(); }, 5000);
-  };
+  evtSource.onerror = () => { setTimeout(() => { if (user) connectSSE(); }, 5000); };
 }
 
-function showNotif({ tipo, icon, titulo, msg, onClick }) {
-  // Permissão de notificação do navegador
-  if (Notification.permission === 'default') Notification.requestPermission();
-  if (Notification.permission === 'granted') {
-    try {
-      const n = new Notification(titulo, { body: msg, icon: '/favicon.ico' });
-      n.onclick = () => { window.focus(); if (onClick) onClick(); n.close(); };
-      setTimeout(() => n.close(), 6000);
-    } catch {}
-  }
-
+function showNotif({ tipo, icon, titulo, msg, ticketId }) {
   const wrap = document.getElementById('notif-wrap');
   const id = 'n' + (++notifCount);
   const div = document.createElement('div');
@@ -1045,7 +1065,7 @@ function showNotif({ tipo, icon, titulo, msg, onClick }) {
   div.id = id;
   div.innerHTML = `
     <div class="notif-icon">${icon}</div>
-    <div class="notif-body" style="cursor:${onClick?'pointer':'default'}" onclick="document.getElementById('${id}').querySelector('.notif-close').click();${onClick?'('+onClick.toString()+')()':''}">
+    <div class="notif-body" style="cursor:${ticketId?'pointer':'default'}" onclick="${ticketId?`dismissNotif('${id}');openModal('${ticketId}')`:''}" >
       <div class="notif-title">${titulo}</div>
       <div class="notif-msg">${msg}</div>
       <div class="notif-time">agora</div>
@@ -1053,11 +1073,9 @@ function showNotif({ tipo, icon, titulo, msg, onClick }) {
     <button class="notif-close" onclick="dismissNotif('${id}')">✕</button>
   `;
   wrap.prepend(div);
-  // Remove automaticamente após 7s
   setTimeout(() => dismissNotif(id), 7000);
-  // Máximo 4 visíveis ao mesmo tempo
   const all = wrap.querySelectorAll('.notif:not(.hide)');
-  if (all.length > 4) dismissNotif(all[all.length - 1].id);
+  if (all.length > 4) dismissNotif(all[all.length-1].id);
 }
 
 function dismissNotif(id) {
