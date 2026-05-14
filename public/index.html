@@ -1017,25 +1017,27 @@ async function showNativeNotif(titulo, msg, tag, ticketId) {
   if (!('Notification' in window)) return;
   if (Notification.permission !== 'granted') return;
 
-  const options = {
-    body: msg,
-    icon: '/icon-192.png',
-    badge: '/icon-72.png',
-    tag,
-    renotify: true,
-    data: { ticketId }
-  };
-
+  // Tenta via SW (funciona em background e outras abas)
   try {
     const reg = swReg || await navigator.serviceWorker?.getRegistration('/');
+    if (reg?.active) {
+      // postMessage ao SW que tem o listener SHOW_NOTIFICATION
+      reg.active.postMessage({ type: 'SHOW_NOTIFICATION', titulo, msg, tag, ticketId });
+      return;
+    }
+    // SW registrado mas sem active — usa showNotification direto no registration
     if (reg?.showNotification) {
-      await reg.showNotification(titulo, options);
+      await reg.showNotification(titulo, {
+        body: msg, icon: '/icon-192.png', badge: '/icon-72.png',
+        tag, renotify: true, vibrate: [200, 100, 200], data: { ticketId }
+      });
       return;
     }
   } catch {}
 
+  // Fallback: Notification direto (funciona só com aba em foco)
   try {
-    const n = new Notification(titulo, options);
+    const n = new Notification(titulo, { body: msg, icon: '/icon-192.png', badge: '/icon-72.png', tag });
     n.onclick = () => { window.focus(); if (ticketId) openModal(ticketId); n.close(); };
     setTimeout(() => n.close(), 9000);
   } catch {}
@@ -1044,11 +1046,12 @@ async function showNativeNotif(titulo, msg, tag, ticketId) {
 // Mostra toast no sistema e, se a aba estiver em segundo plano/outra aba,
 // também dispara a notificação nativa do navegador.
 function notifyUser({ tipo, icon, titulo, msg, tag, ticketId, onVisible }) {
-  if (!document.hidden && document.hasFocus()) {
+  // Sempre mostra o toast quando a aba está visível e em foco
+  if (!document.hidden) {
     showNotif({ tipo, icon, titulo, msg, ticketId });
     if (typeof onVisible === 'function') onVisible();
-    return;
   }
+  // Sempre dispara notificação nativa (SW cuida de não duplicar via tag)
   showNativeNotif(titulo, msg, tag, ticketId);
 }
 
