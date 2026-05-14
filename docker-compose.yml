@@ -7,9 +7,9 @@ services:
     container_name: helpdesk-ti
     restart: unless-stopped
     ports:
-      - "3098:3098"
+      - "8909:8909"
     environment:
-      - PORT=3098
+      - PORT=8909
       - APP_URL=https://help.labsativa.com.br
       - DB_HOST=${DB_HOST}
       - DB_PORT=${DB_PORT}
