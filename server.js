@@ -8,7 +8,7 @@ const path       = require('path');
 const crypto     = require('crypto');
 
 const app  = express();
-const PORT = process.env.PORT || 8098;
+const PORT = process.env.PORT || 3098;
 
 // ─── Config TI ────────────────────────────────────────────────────────────
 const TI_USER = process.env.TI_USER || 'admin';
@@ -205,6 +205,43 @@ app.post('/api/auth/logout', (req, res) => {
 });
 
 // ═══════════════════════════════════════════════════════════════════════════
+// SSE — NOTIFICAÇÕES EM TEMPO REAL
+// ═══════════════════════════════════════════════════════════════════════════
+
+const sseClients = new Map(); // token → { res, userId, role }
+
+app.get('/api/events', (req, res) => {
+  const token = req.query.token;
+  if (!token) return res.status(401).end();
+  const s = sessions.get(token);
+  if (!s) return res.status(401).end();
+
+  res.setHeader('Content-Type',  'text/event-stream');
+  res.setHeader('Cache-Control', 'no-cache');
+  res.setHeader('Connection',    'keep-alive');
+  res.setHeader('X-Accel-Buffering', 'no');
+  res.flushHeaders();
+
+  const ping = setInterval(() => res.write(':ping
+
+'), 25000);
+  sseClients.set(token, { res, userId: s.userId, role: s.role });
+  req.on('close', () => { clearInterval(ping); sseClients.delete(token); });
+});
+
+function broadcast(event, data, filter) {
+  const payload = 'event: ' + event + '
+data: ' + JSON.stringify(data) + '
+
+';
+  for (const [, client] of sseClients) {
+    if (!filter || filter(client)) {
+      try { client.res.write(payload); } catch {}
+    }
+  }
+}
+
+// ═══════════════════════════════════════════════════════════════════════════
 // ROTAS — TICKETS
 // ═══════════════════════════════════════════════════════════════════════════
 
@@ -296,6 +333,11 @@ app.post('/api/tickets', requireUser, upload.array('anexos', 5), async (req, res
       `))
     ]);
 
+    // Notifica TI: novo chamado
+    broadcast('novo_chamado', {
+      id: ticket.id, titulo: ticket.titulo,
+      nome: ticket.nome, pri: ticket.pri, cat: ticket.cat
+    }, c => c.role === 'ti');
     res.status(201).json(ticket);
   } catch(e) { console.error(e); res.status(500).json({ error: 'Erro interno' }); }
 });
@@ -329,7 +371,14 @@ app.patch('/api/tickets/:id/status', requireTI, async (req, res) => {
       `));
     }
 
-    res.json(await getTicketCompleto(req.params.id));
+    const updated = await getTicketCompleto(req.params.id);
+    // Notifica dono do ticket: status mudou
+    broadcast('status_atualizado', {
+      id: updated.id, titulo: updated.titulo, status: updated.status
+    }, c => c.userId === updated.user_id);
+    // Notifica TI também (para refresh do painel)
+    broadcast('refresh', { id: updated.id }, c => c.role === 'ti');
+    res.json(updated);
   } catch(e) { console.error(e); res.status(500).json({ error: 'Erro interno' }); }
 });
 
@@ -352,6 +401,11 @@ app.post('/api/tickets/:id/mensagens', requireUser, async (req, res) => {
         <a href="${APP_URL}" style="background:#1A1816;color:white;padding:10px 18px;border-radius:6px;text-decoration:none;font-size:13px">Responder →</a>
       `));
     }
+    // Notifica o outro lado: nova mensagem
+    broadcast('nova_mensagem', {
+      ticketId: t.id, titulo: t.titulo,
+      de: deTI ? 'TI' : t.nome, texto: texto.slice(0, 80)
+    }, c => deTI ? c.userId === t.user_id : c.role === 'ti');
     res.json(t);
   } catch(e) { console.error(e); res.status(500).json({ error: 'Erro interno' }); }
 });

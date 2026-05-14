@@ -194,6 +194,24 @@ body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--text);fon
   .hero{padding:18px}
   .auth-box{padding:28px 20px}
 }
+
+/* ── NOTIFICAÇÕES ── */
+.notif-wrap{position:fixed;top:68px;right:20px;z-index:500;display:flex;flex-direction:column;gap:8px;max-width:340px;pointer-events:none}
+.notif{background:var(--surface);border:1px solid var(--border);border-radius:var(--rl);padding:14px 16px;box-shadow:0 4px 20px rgba(0,0,0,.12);pointer-events:all;display:flex;align-items:flex-start;gap:12px;animation:nIn .3s ease;transform-origin:top right}
+@keyframes nIn{from{opacity:0;transform:translateX(20px) scale(.96)}to{opacity:1;transform:none}}
+@keyframes nOut{to{opacity:0;transform:translateX(20px) scale(.96)}}
+.notif.hide{animation:nOut .25s ease forwards}
+.notif-icon{width:34px;height:34px;border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:16px;flex-shrink:0}
+.notif-body{flex:1;min-width:0}
+.notif-title{font-size:13px;font-weight:500;margin-bottom:2px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.notif-msg{font-size:12px;color:var(--text2);line-height:1.4;overflow:hidden;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical}
+.notif-time{font-size:10px;color:var(--text3);margin-top:4px}
+.notif-close{background:none;border:none;cursor:pointer;color:var(--text3);font-size:14px;padding:0;line-height:1;flex-shrink:0;margin-top:1px}
+.notif-close:hover{color:var(--text)}
+.notif-blue .notif-icon{background:var(--blue-bg);color:var(--blue)}
+.notif-green .notif-icon{background:var(--green-bg);color:var(--green)}
+.notif-amber .notif-icon{background:var(--amber-bg);color:var(--amber)}
+.notif-red .notif-icon{background:var(--red-bg);color:var(--red)}
 </style>
 </head>
 <body>
@@ -481,6 +499,9 @@ body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--text);fon
 </div>
 </div><!-- #app -->
 
+<!-- NOTIFICAÇÕES -->
+<div class="notif-wrap" id="notif-wrap"></div>
+
 <!-- MODAL DETALHE -->
 <div class="mo" id="modal" onclick="closeModal(event)"><div class="mbox" id="mbox"></div></div>
 <div class="toast" id="toast"></div>
@@ -583,6 +604,7 @@ function startSession(data){
 
   $('auth-screen').style.display='none';
   $('app').style.display='';
+  connectSSE();
   switchView('home');
   if(role==='ti') loadTI();
   else loadUserHome();
@@ -590,6 +612,7 @@ function startSession(data){
 
 function doLogout(){
   fetch('/api/auth/logout',{method:'POST',headers:aH()}).catch(()=>{});
+  if(evtSource){evtSource.close();evtSource=null;}
   sessionStorage.removeItem('hd_sess');
   user=null; role=null; allTickets=[];
   $('app').style.display='none';
@@ -925,6 +948,109 @@ async function loadRel(){
   }catch{toast('Erro ao carregar relatórios')}
 }
 function exportCSV(){window.open('/api/relatorio/csv','_blank')}
+
+// ── NOTIFICAÇÕES SSE ──────────────────────────────────────────────────────
+let evtSource = null;
+let notifCount = 0;
+
+function connectSSE() {
+  if (evtSource) evtSource.close();
+  if (!user?.token) return;
+  evtSource = new EventSource('/api/events?token=' + encodeURIComponent(user.token));
+
+  evtSource.addEventListener('novo_chamado', e => {
+    const d = JSON.parse(e.data);
+    showNotif({
+      tipo: 'red',
+      icon: '🎫',
+      titulo: 'Novo chamado #' + d.id,
+      msg: d.titulo + ' — ' + d.nome,
+      onClick: () => { switchView('home'); setTimeout(() => openModal(d.id), 300); }
+    });
+    loadTI();
+  });
+
+  evtSource.addEventListener('nova_mensagem', e => {
+    const d = JSON.parse(e.data);
+    showNotif({
+      tipo: 'blue',
+      icon: '💬',
+      titulo: 'Nova mensagem de ' + d.de,
+      msg: d.texto,
+      onClick: () => openModal(d.ticketId)
+    });
+    if (role === 'ti') loadTI(); else loadUserHome();
+    // Atualiza modal se estiver aberto no mesmo ticket
+    const modal = document.getElementById('modal');
+    if (modal.classList.contains('open') && document.querySelector('.mt')?.textContent.includes('#' + d.ticketId)) {
+      openModal(d.ticketId);
+    }
+  });
+
+  evtSource.addEventListener('status_atualizado', e => {
+    const d = JSON.parse(e.data);
+    const icons = { 'Em andamento': '🔧', 'Resolvido': '✅' };
+    const tipos = { 'Em andamento': 'amber', 'Resolvido': 'green' };
+    showNotif({
+      tipo: tipos[d.status] || 'blue',
+      icon: icons[d.status] || '📋',
+      titulo: 'Chamado #' + d.id + ' — ' + d.status,
+      msg: d.titulo,
+      onClick: () => openModal(d.id)
+    });
+    loadUserHome();
+  });
+
+  evtSource.addEventListener('refresh', e => {
+    if (role === 'ti') loadTI();
+  });
+
+  evtSource.onerror = () => {
+    // Reconecta após 5s se cair
+    setTimeout(() => { if (user) connectSSE(); }, 5000);
+  };
+}
+
+function showNotif({ tipo, icon, titulo, msg, onClick }) {
+  // Permissão de notificação do navegador
+  if (Notification.permission === 'default') Notification.requestPermission();
+  if (Notification.permission === 'granted') {
+    try {
+      const n = new Notification(titulo, { body: msg, icon: '/favicon.ico' });
+      n.onclick = () => { window.focus(); if (onClick) onClick(); n.close(); };
+      setTimeout(() => n.close(), 6000);
+    } catch {}
+  }
+
+  const wrap = document.getElementById('notif-wrap');
+  const id = 'n' + (++notifCount);
+  const div = document.createElement('div');
+  div.className = 'notif notif-' + tipo;
+  div.id = id;
+  div.innerHTML = `
+    <div class="notif-icon">${icon}</div>
+    <div class="notif-body" style="cursor:${onClick?'pointer':'default'}" onclick="document.getElementById('${id}').querySelector('.notif-close').click();${onClick?'('+onClick.toString()+')()':''}">
+      <div class="notif-title">${titulo}</div>
+      <div class="notif-msg">${msg}</div>
+      <div class="notif-time">agora</div>
+    </div>
+    <button class="notif-close" onclick="dismissNotif('${id}')">✕</button>
+  `;
+  wrap.prepend(div);
+  // Remove automaticamente após 7s
+  setTimeout(() => dismissNotif(id), 7000);
+  // Máximo 4 visíveis ao mesmo tempo
+  const all = wrap.querySelectorAll('.notif:not(.hide)');
+  if (all.length > 4) dismissNotif(all[all.length - 1].id);
+}
+
+function dismissNotif(id) {
+  const el = document.getElementById(id);
+  if (!el || el.classList.contains('hide')) return;
+  el.classList.add('hide');
+  setTimeout(() => el.remove(), 260);
+}
+
 </script>
 </body>
 </html>
